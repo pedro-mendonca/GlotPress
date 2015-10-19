@@ -172,6 +172,11 @@ function gp_query_vars( $query_vars ) {
 }
 add_filter( 'query_vars', 'gp_query_vars' );
 
+/**
+ * Run the router and display the GlotPress page.
+ * 
+ *  @since	0.1
+ */ 
 function gp_run_route() {
 	gp_populate_notices();
 	global $wp;
@@ -179,4 +184,8 @@ function gp_run_route() {
 		GP::$router->route();
 	}
 }
-add_action( 'template_redirect', 'gp_run_route' );
+
+// Only run the router if we're running a supported version of WP.
+if ( GP_UNSUPPORTED !== true ) {
+	add_action( 'template_redirect', 'gp_run_route' );
+}
