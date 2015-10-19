@@ -186,6 +186,6 @@ function gp_run_route() {
 }
 
 // Only run the router if we're running a supported version of WP.
-if ( GP_UNSUPPORTED !== true ) {
+if ( ! defined( 'GP_UNSUPPORTED' ) ) {
 	add_action( 'template_redirect', 'gp_run_route' );
 }

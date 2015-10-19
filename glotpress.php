@@ -36,11 +36,23 @@ define( 'GP_PATH', dirname( __FILE__ ) . '/' );
 define( 'GP_INC', 'gp-includes/' );
 define( 'GP_WP_REQUIRED_VERSION', '4.4' );
 
-// This adds a row after WP Statistics in the plugin page IF an incompatible version of PHP is running.
+// This adds a row after GlotPress in the plugin page IF an incompatible version of WordPress is running.
 function gp_after_plugin_row() {
 	global $wp_version;
+?>
+	<tr>
+		<th scope="row" class="check-column">
+		</th>
+		<td class="plugin-title" colspan="10">
+			<span style="padding: 3px; color: black; background-color: yellow	; font-weight: bold">
+			&nbsp;&nbsp;
+			<?php echo sprintf(__('WARNING: GlotPress has detected an unsupported version of WordPress, WordPress Version %s or higher is required! Your current WordPress version is %s.'), GP_WP_REQUIRED_VERSION, $wp_version ); ?>
+			&nbsp;&nbsp;
+			</span>
+		</td>
+	</tr>';
 	
-	echo '<tr><th scope="row" class="check-column"></th><td class="plugin-title" colspan="10"><span style="padding: 3px; color: black; background-color: yellow	; font-weight: bold">&nbsp;&nbsp;' . __('WARNING: GlotPress has detected an unsupported version of WordPress, WordPress Version ') . GP_WP_REQUIRED_VERSION . __(' or higher is required!', 'wp_statistics') . '  ' . __('Your current WordPress version is') . ' ' . $wp_version . '.&nbsp;&nbsp;</span></td></tr>';
+<?php
 }
 
 global $wp_version;
