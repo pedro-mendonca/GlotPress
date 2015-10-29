@@ -100,43 +100,6 @@ function gp_populate_notices() {
 }
 
 /**
- * Sets headers, which redirect to another page.
- *
- * @param string $location The path to redirect to
- * @param int $status Status code to use
- * @return bool False if $location is not set
- */
-function gp_redirect( $location, $status = 302 ) {
-	// TODO: add server-guessing code from bb-load.php in a function in gp-includes/system.php
-    global $is_IIS;
-
-    $location = apply_filters( 'gp_redirect', $location, $status );
-    $status = apply_filters( 'gp_redirect_status', $status, $location );
-
-    if ( !$location ) // allows the gp_redirect filter to cancel a redirect
-        return false;
-
-    if ( $is_IIS ) {
-        header( "Refresh: 0;url=$location" );
-    } else {
-        if ( php_sapi_name() != 'cgi-fcgi' )
-            status_header( $status ); // This causes problems on IIS and some FastCGI setups
-        header( "Location: $location" );
-    }
-}
-
-/**
- * Builds SQL LIMIT/OFFSET clause for the given page
- *
- * @param integer $page The page number. The first page is 1.
- * @param integer $per_page How many items are there in a page
- */
-function gp_limit_for_page( $page, $per_page ) {
-	$page = $page? $page - 1 : 0;
-	return sprintf( 'LIMIT %d OFFSET %d', $per_page, $per_page * $page );
-}
-
-/**
  * Returns an array of arrays, where the i-th array contains the i-th element from
  * each of the argument arrays. The returned array is truncated in length to the length
  * of the shortest argument array.
@@ -250,36 +213,6 @@ function gp_clean_translation_sets_cache( $project_id ) {
 
 	foreach ( $translation_sets as $set ) {
 		gp_clean_translation_set_cache( $set->id );
-	}
-}
-
-
-/**
- * Shows the time past since the given time
- *
- * @param int $time Unix time stamp you want to compare against.
- */
-function gp_time_since( $time ) {
-	$time = time() - $time; // to get the time since that moment
-
-	$tokens = array (
-		31536000 => 'year',
-		2592000 => 'month',
-		604800 => 'week',
-		86400 => 'day',
-		3600 => 'hour',
-		60 => 'minute',
-		1 => 'second'
-	);
-
-	foreach ( $tokens as $unit => $text ) {
-		if ( $time < $unit ) {
-			continue;
-		}
-
-		$numberOfUnits = floor( $time / $unit );
-
-		return $numberOfUnits . ' ' . $text . ( ( $numberOfUnits > 1 ) ? 's' : '' );
 	}
 }
 
