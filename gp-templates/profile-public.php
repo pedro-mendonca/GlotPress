@@ -9,7 +9,7 @@ gp_tmpl_header();
 
 <div>
 	<div class="user-card">
-		<div class="user-avatar"><img src="<?php echo $user->get_avatar(); ?>" /> </div>
+		<div class="user-avatar"><?php echo get_avatar( $user->user_email, 100 ); ?></div>
 
 		<dl class="user-info">
 			<dd><?php
@@ -40,7 +40,7 @@ gp_tmpl_header();
 						sprintf( _n( '%s contribution', '%s contributions',$project->count, 'glotpress' ), $project->count ) );
 				?></p>
 				<p class="ago">
-					<?php printf( __( 'last translation about %s ago (UTC)', 'glotpress' ), human_time_diff( backpress_gmt_strtotime( $project->last_updated ) ) ); ?>
+					<?php printf( __( 'last translation about %s ago (UTC)', 'glotpress' ), human_time_diff( gp_gmt_strtotime( $project->last_updated ) ) ); ?>
 				</p>
 			</li>
 		<?php endforeach; ?>
