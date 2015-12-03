@@ -21,7 +21,7 @@ if ( ! isset( $gp_table_prefix ) ) {
 	$gp_table_prefix = $GLOBALS['table_prefix'] . 'gp_';
 }
 
-$table_names = array('translations', 'translation_sets', 'glossaries', 'glossary_entries', 'originals', 'projects', 'meta', 'permissions', 'api_keys' );
+$table_names = array('translations', 'translation_sets', 'glossaries', 'glossary_entries', 'originals', 'projects', 'meta', 'permissions' );
 foreach ( $table_names as $table ) {
 	$wpdb->{'gp_' . $table} = $gp_table_prefix . $table;
 }
@@ -71,7 +71,6 @@ require_once GP_PATH . GP_INC . 'things/permission.php';
 require_once GP_PATH . GP_INC . 'things/project.php';
 require_once GP_PATH . GP_INC . 'things/translation-set.php';
 require_once GP_PATH . GP_INC . 'things/translation.php';
-require_once GP_PATH . GP_INC . 'things/user.php';
 require_once GP_PATH . GP_INC . 'things/validator-permission.php';
 require_once GP_PATH . GP_INC . 'things/glossary.php';
 require_once GP_PATH . GP_INC . 'things/glossary-entry.php';

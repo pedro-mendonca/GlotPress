@@ -54,12 +54,12 @@ gp_tmpl_header();
 		<dt><label for="user_login"><?php _e( 'Username:', 'glotpress' ); ?></label></dt>
 		<dd><input type="text" name="user_login" value="" id="user_login" /></dd>
 		<dt><label for="locale"><?php _e( 'Locale:', 'glotpress' ); ?></label></dt>
-		<dd><?php echo gp_locales_dropdown( 'locale' ); ?></dd>
+		<dd><?php echo gp_locales_by_project_dropdown( $project->id, 'locale' ); ?></dd>
 		<dt><label for="set-slug"><?php _e( 'Translation set slug:', 'glotpress' ); ?></label></dt>
 		<dd><input type="text" name="set-slug" value="default" id="set-slug" /></dd>
 
 		<dt>
-			<input type="submit" name="submit" value="<?php echo esc_attr(__( 'Add', 'glotpress' )); ?>" id="submit" />
+			<input type="submit" name="submit" value="<?php esc_attr_e( 'Add', 'glotpress' ); ?>" id="submit" />
 			<input type="hidden" name="action" value="add-validator" />
 		</dt>
 </form>
