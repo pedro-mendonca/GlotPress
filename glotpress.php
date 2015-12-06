@@ -51,7 +51,7 @@ function gp_after_plugin_row() {
 			&nbsp;&nbsp;
 			</span>
 		</td>
-	</tr>';
+	</tr>
 	
 <?php
 }
