@@ -1,0 +1,133 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: GlotPress glossary test\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2022-07-21 13:01+0100\n"
+"Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>\n"
+"Language-Team: \n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.1.1\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#. Nouns, plural.
+#. Ending in a sibilant. Suffix: '-es'.
+msgctxt "Nouns, plural"
+msgid "Kiss and kisses, waltz and waltzes, box and boxes, dish and dishes, coach and coaches."
+msgid_plural "Kiss and kisses, waltz and waltzes, box and boxes, dish and dishes, coach and coaches."
+msgstr[0] ""
+msgstr[1] ""
+
+#. Nouns, plural.
+#. Ending with '-y' preceded by vowel. Suffix: '-s'.
+msgctxt "Nouns, plural"
+msgid "Delay and delays, key and keys, toy and toys, guy and guys."
+msgid_plural "Delay and delays, key and keys, toy and toys, guy and guys."
+msgstr[0] ""
+msgstr[1] ""
+
+#. Nouns, plural.
+#. Ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
+msgctxt "Nouns, plural"
+msgid "Lady and ladies, hero and heroes, tomato and tomatoes."
+msgid_plural "Lady and ladies, hero and heroes, tomato and tomatoes."
+msgstr[0] ""
+msgstr[1] ""
+
+#. Nouns, plural.
+#. Ending with '-an'. Suffix: '-en'.
+msgctxt "Nouns, plural"
+msgid "Woman and women."
+msgid_plural "Woman and women."
+msgstr[0] ""
+msgstr[1] ""
+
+#. Nouns, plural.
+#. Ending with '-f', '-fe' or '-s'. Suffix: '-es'.
+msgctxt "Nouns, plural"
+msgid "Wife and wives, leaf and leaves, wolf and wolves, bus and buses, lens and lenses."
+msgid_plural "Wife and wives, leaf and leaves, wolf and wolves, bus and buses, lens and lenses."
+msgstr[0] ""
+msgstr[1] ""
+
+#. Nouns, plural.
+#. Fallback suffix for most nouns not ended with '-s'. Suffix: '-s'.
+msgctxt "Nouns, plural"
+msgid "Chef and chefs."
+msgid_plural "Chef and chefs."
+msgstr[0] ""
+msgstr[1] ""
+
+#. Verbs.
+#. Ending in a sibilant. Suffix: '-es'.
+msgctxt "Verbs, third-person singular"
+msgid "Pass and passes, quiz and quizes, fix and fixes, push and pushes, watch and watches."
+msgstr ""
+
+#. Verbs.
+#. Ending with '-y' preceded by vowel. Suffix: '-s'.
+msgctxt "Verbs, third-person singular"
+msgid "Play and plays."
+msgstr ""
+
+#. Verbs.
+#. Ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
+msgctxt "Verbs, third-person singular"
+msgid "Try and tries, go and goes, do and does."
+msgstr ""
+
+#. Verbs.
+#. Fallback suffix for most verbs. Suffix: '-s'.
+msgctxt "Verbs, third-person singular"
+msgid "Format and formats, make and makes, pull and pulls."
+msgstr ""
+
+#. Verbs.
+#. Not ending with '-e'.
+msgctxt "Verbs, past simple tense and past participle. Suffix '-ed'."
+msgid "Fix and fixed, push and pushed."
+msgstr ""
+
+#. Verbs.
+#. Ending with '-e'.
+msgctxt "Verbs, past simple tense and past participle. Suffix '-ed'."
+msgid "Contribute and contributed, delete and deleted."
+msgstr ""
+
+#. Verbs.
+#. Not ending with '-e'.
+msgctxt "Verbs, present participle and gerund of verbs. Suffix '-ing'."
+msgid "Fix and fixing, push and pushing."
+msgstr ""
+
+#. Verbs.
+#. Ending with '-ee', '-ye' -or '-oe'.
+msgctxt "Verbs, present participle and gerund of verbs. Suffix '-ing'."
+msgid "Agree and agreeing, see and seeing, dye and dyeing, tiptoe and tiptoeing."
+msgstr ""
+
+#. Verbs.
+#. Ending with single '-e'.
+msgctxt "Verbs, present participle and gerund of verbs. Suffix '-ing'."
+msgid "Contribute and contributing, delete and deleting, care and caring."
+msgstr ""
+
+#. Verbs.
+#. Verbs that form nouns ending with suffix '-tion'.
+msgctxt "Verbs, forming nouns"
+msgid "Abbreviate and abbreviation, authorize and authorization, specify and specification, liquefy and liquefaction, exclaim and exclamation, encrypt and encryption, subscribe and subscription, perceive and perception, resume and resumption, correct and correction, delete and deletion, edit and edition, ignite and ignition, contribute and contribution, resolve and resolution, compose and composition, abstain and abstention, contravene and contravention, prevent and prevention, insert and insertion."
+msgstr ""
+
+#. Verbs.
+#. Verbs that form nouns ending with suffix '-sion'.
+msgctxt "Verbs, forming nouns"
+msgid "Invade and invasion, precede and precession, decide and decision, explode and explosion, exclude and exclusion, supervise and supervision, confuse and confusion, expel and expulsion, submit and submission, compress and compression, extend and extension, convert and conversion, disperse and dispersion, recur and recursion, emerge and emersion."
+msgstr ""
+
+#. All possible entries.
+msgctxt "All possible entries."
+msgid "Kiss and kisses, waltz and waltzes, box and boxes, dish and dishes, coach and coaches. Delay and delays, key and keys, toy and toys, guy and guys. Lady and ladies, hero and heroes, tomato and tomatoes. Woman and women. Wife and wives, leaf and leaves, wolf and wolves, bus and buses, lens and lenses. Chef and chefs. Pass and passes, quiz and quizes, fix and fixes, push and pushes, watch and watches. Play and plays. Try and tries, go and goes, do and does. Format and formats, make and makes, pull and pulls. Fix and fixed, push and pushed. Contribute and contributed, delete and deleted. Fix and fixing, push and pushing. Agree and agreeing, see and seeing, dye and dyeing, tiptoe and tiptoeing. Contribute and contributing, delete and deleting, care and caring. Abbreviate and abbreviation, authorize and authorization, specify and specification, liquefy and liquefaction, exclaim and exclamation, encrypt and encryption, subscribe and subscription, perceive and perception, resume and resumption, correct and correction, delete and deletion, edit and edition, ignite and ignition, contribute and contribution, resolve and resolution, compose and composition, abstain and abstention, contravene and contravention, prevent and prevention, insert and insertion. Invade and invasion, precede and precession, decide and decision, explode and explosion, exclude and exclusion, supervise and supervision, confuse and confusion, expel and expulsion, submit and submission, compress and compression, extend and extension, convert and conversion, disperse and dispersion, recur and recursion, emerge and emersion."
+msgstr ""
