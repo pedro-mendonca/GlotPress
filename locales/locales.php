@@ -20,7 +20,7 @@ class GP_Locale {
 	/**
 	 * The variant root for this locale.
 	 *
-	 * @since 3.0.0
+	 * @since 4.0.0
 	 *
 	 * @var string
 	 */
@@ -29,7 +29,7 @@ class GP_Locale {
 	/**
 	 * The variants of this locale.
 	 *
-	 * @since 3.0.0
+	 * @since 4.0.0
 	 *
 	 * @var array
 	 */
@@ -356,7 +356,7 @@ class GP_Locales {
 		$bgn->wp_locale = 'bgn';
 		$bgn->slug = 'bgn';
 		$bgn->text_direction = 'rtl';
-		
+
 		$bh = new GP_Locale();
 		$bh->english_name = 'Bihari';
 		$bh->native_name = 'भोजपुरी';
