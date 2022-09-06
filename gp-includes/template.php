@@ -419,7 +419,11 @@ function gp_locales_by_project_dropdown( $project_id, $name_and_id, $selected_sl
 
 	$options = array( '' => __( '&mdash; Locale &mdash;', 'glotpress' ) );
 	foreach ( $locales as $key => $locale ) {
-		$options[ $key ] = sprintf( '%s &mdash; %s', $locale->slug, $locale->english_name );
+		if ( $locale->variant_root === null ) {
+			$options[ $key ] = sprintf( '%s &mdash; %s', $locale->slug, $locale->english_name );
+		} else {
+			$options[ $key ] = sprintf( '%s &mdash; %s', $locale->slug, $locale->english_name  . ' [Variant]' );
+		}
 	}
 
 	return gp_select( $name_and_id, $options, $selected_slug, $attrs );
