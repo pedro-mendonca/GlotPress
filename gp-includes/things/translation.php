@@ -538,7 +538,7 @@ class GP_Translation extends GP_Thing {
 		 * Filters the 'for_translation' query SQL clauses.
 		 *
 		 * @since 2.3.0
-		 * @since 3.0.0 Removed $join_on and added $root_join clause.  Also added $root_translation_set.
+		 * @since 4.0.0 Removed $join_on and added $root_join clause.  Also added $root_translation_set.
 		 *
 		 * @param array              $pieces          {
 		 *     Translation query SQL clauses.
