@@ -54,6 +54,49 @@ class GP_Route_Project extends GP_Route_Main {
 			}
 		);
 
+		$variant_translation_sets = array();
+
+		// Move variants sets below its roots.
+		foreach ( $translation_sets as $key => $translation_set ) {
+			$root_translation_set          = null;
+			$translation_set->variant_root = null;
+			$locale = GP_Locales::by_slug( $translation_set->locale );
+
+			if ( null !== $locale->variant_root ) {
+				$root_locale                   = GP_Locales::by_slug( $locale->variant_root );
+				$translation_set->variant_root = $root_locale->slug;
+				$root_translation_set          = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set->slug, $locale->variant_root );
+
+				// Only set the root translation flag if we have a valid root translation set, otherwise there's no point in querying it later.
+				if ( null !== $root_translation_set ) {
+					$variant_translation_sets[] = $translation_set;
+					unset( $translation_sets[ $key] );
+				}
+			}
+		}
+
+		// Sort variant translation sets by slug, descending.
+		usort(
+			$variant_translation_sets,
+			function( $a, $b ) {
+				return( $a->locale < $b->locale );
+			}
+		);
+
+		// Move variants sets below its roots.
+		foreach ( $variant_translation_sets as $key => $variant_translation_set ) {
+			$locale       = GP_Locales::by_slug( $variant_translation_set->locale );
+			$root_locale  = GP_Locales::by_slug( $locale->variant_root );
+
+			foreach ( $translation_sets as $root_key => $translation_set ) {
+				$insert = null;
+				if ( $translation_set->locale === $root_locale->slug ) {
+					$insert[0] = $variant_translation_set;
+					array_splice( $translation_sets, $root_key + 1, 0, $insert );
+				}
+			}
+		}
+
 		/**
 		 * Filter the list of translation sets of a project.
 		 *
