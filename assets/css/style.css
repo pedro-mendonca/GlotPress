@@ -807,6 +807,19 @@ table.translations tr.preview.root-translation, #legend .root-translation  {
 	background-color: #EEEEEE;
 }
 
+table.translation-sets tr.root td.locale-name  {
+	font-weight: 700;
+}
+
+table.translation-sets tr.variant td.locale-name  {
+	font-weight: 600;
+	padding-left: 2em;
+}
+
+table.translation-sets tr td.locale-name span.bubble {
+	font-weight: 500;
+}
+
 table.locale-sub-projects tbody tr:hover .set-name {
 	border-left: 1px solid var( --gp-color-accent-emphasis );
 	box-shadow: inset 2px 0 0 var( --gp-color-accent-emphasis );

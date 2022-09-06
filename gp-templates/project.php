@@ -91,10 +91,13 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 			$class = $set->variant_root !== null ? 'variant' : 'root';
 
 		?>
-			<tr>
-				<td>
-					<strong><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?></strong>
+			<tr class="<?php echo esc_attr( $class ); ?>">
+				<td class="locale-name">
 					<?php
+					if ( $set->variant_root !== null ) {
+						echo '• ';
+					}
+					gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() );
 					if ( $set->current_count && $set->current_count >= $set->all_count * 0.9 ) :
 							$percent = floor( $set->current_count / $set->all_count * 100 );
 					?>
