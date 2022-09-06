@@ -88,6 +88,8 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 		<tbody>
 		<?php
 		foreach ( $translation_sets as $set ) :
+			$class = $set->variant_root !== null ? 'variant' : 'root';
+
 		?>
 			<tr>
 				<td>
@@ -237,6 +239,7 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 		$(".translation-sets").tablesorter({
 			theme: 'glotpress',
 			sortList: [[2,1]],
+			cssChildRow: 'variant',
 			headers: {
 				0: {
 					sorter: 'text'
