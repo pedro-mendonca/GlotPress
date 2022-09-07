@@ -216,6 +216,7 @@ class GP_Locales {
 		$arq->text_direction = 'rtl';
 		$arq->variant_root = $ar->slug;
 		$ar->variants[ $arq->slug ] = $arq->english_name;
+		$arq->alphabet = 'arabic';
 
 		$ary = new GP_Locale();
 		$ary->english_name = 'Moroccan Arabic';
@@ -230,6 +231,7 @@ class GP_Locales {
 		$ary->text_direction = 'rtl';
 		$ary->variant_root = $ar->slug;
 		$ar->variants[ $ary->slug ] = $ary->english_name;
+		$ary->alphabet = 'arabic';
 
 		$as = new GP_Locale();
 		$as->english_name = 'Assamese';
@@ -293,6 +295,7 @@ class GP_Locales {
 		$azb->text_direction = 'rtl';
 		$azb->variant_root = $az->slug;
 		$az->variants[ $azb->slug ] = $azb->english_name;
+		$azb->alphabet = 'persian';
 
 		$az_tr = new GP_Locale();
 		$az_tr->english_name = 'Azerbaijani (Turkey)';
@@ -410,7 +413,7 @@ class GP_Locales {
 		$bn_bd->wp_locale = 'bn_BD';
 		$bn_bd->slug = 'bn';
 		$bn_bd->google_code = 'bn';
-		$bn_bd->alphabet = 'bengali';
+		$bn_bd->alphabet  ='bengali';
 
 		$bn_in = new GP_Locale();
 		$bn_in->english_name = 'Bengali (India)';
@@ -718,6 +721,7 @@ class GP_Locales {
 		$el_po->slug = 'el-po';
 		$el_po->variant_root = $el->slug;
 		$el->variants[ $el->slug ] = $el->english_name;
+		$el_po->alphabet  = 'polytonic';
 
 		$emoji = new GP_Locale();
 		$emoji->english_name = 'Emoji';
@@ -1070,6 +1074,7 @@ class GP_Locales {
 		$fa_af->google_code = 'fa';
 		$fa_af->variant_root = $fa->slug;
 		$fa->variants[ $fa_af->slug ] = $fa_af->english_name;
+		$fa_af->alphabet = 'persian';
 
 		$ff_sn = new GP_Locale();
 		$ff_sn->english_name = 'Fulah';
@@ -2489,6 +2494,7 @@ class GP_Locales {
 		$ta_lk->google_code = 'ta';
 		$ta_lk->variant_root = $ta->slug;
 		$ta->variants[ $ta_lk->slug ] = $ta_lk->english_name;
+		$ta_lk->alphabet = 'tamil';
 
 		$tah = new GP_Locale();
 		$tah->english_name = 'Tahitian';
@@ -2806,6 +2812,7 @@ class GP_Locales {
 		$zh_cn->facebook_locale = 'zh_CN';
 		$zh_cn->variant_root = $zh->slug;
 		$zh->variants[ $zh_cn->slug ] = $zh_cn->english_name;
+		$zh_cn->alphabet = 'simplified-chinese';
 
 		$zh_hk = new GP_Locale();
 		$zh_hk->english_name = 'Chinese (Hong Kong)';
@@ -2833,6 +2840,7 @@ class GP_Locales {
 		$zh_sg->plural_expression = '0';
 		$zh_sg->variant_root = $zh_cn->slug;
 		$zh->variants[ $zh_sg->slug ] = $zh_cn->english_name;
+		$zh_sg->alphabet = 'hanyu';
 
 		$zh_tw = new GP_Locale();
 		$zh_tw->english_name = 'Chinese (Taiwan)';
