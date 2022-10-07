@@ -440,6 +440,20 @@ $i = 0;
 	</tr>
 	</thead>
 <?php
+	$root_locale          = null;
+	$root_translation_set = null;
+	$has_root             = null;
+
+	if ( null !== $locale->variant_root ) {
+		$root_locale          = GP_Locales::by_slug( $locale->variant_root );
+		$root_translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set->slug, $locale->variant_root );
+
+		// Only set the root translation flag if we have a valid root translation set, otherwise there's no point in querying it later.
+		if ( null !== $root_translation_set ) {
+			$has_root = true;
+		}
+	}
+
 	foreach ( $translations as $translation ) {
 		if ( ! $translation->translation_set_id ) {
 			$translation->translation_set_id = $translation_set->id;
@@ -508,6 +522,14 @@ $i = 0;
 		?>
 		<div class="box has-warnings"></div>
 		<div><?php _e( 'With warnings', 'glotpress' ); ?></div>
+<?php
+	if ( $locale->variant_root ) :
+?>
+	<div class="box root-translation"></div>
+	<div><?php _e( 'Root translation', 'glotpress' ); // phpcs:ignore WordPress.Security.EscapeOutput. ?></div>
+<?php
+	endif
+?>
 	</div>
 	<?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
 </div>
