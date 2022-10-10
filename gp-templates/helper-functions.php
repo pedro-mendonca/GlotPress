@@ -360,6 +360,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 		<div>
 			<?php
 			if ( $can_edit ) {
+				echo '<div class="counts"></div>';
 				gp_entry_actions();
 			} elseif ( is_user_logged_in() ) {
 				_e( 'You are not allowed to edit this translation.', 'glotpress' );
