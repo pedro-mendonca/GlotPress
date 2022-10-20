@@ -153,4 +153,16 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
 	}
 
+	/**
+	 * Expects highlighting leading and ending spaces in single line strings, and double/multiple spaces in the middle.
+	 */
+	function test_prepare_original_with_spaces_in_begining_and_end_and_multiple_spaces_in_middle() {
+		$test_string     = '  Two spaces at the begining, double  and triple   spaces in the middle, and one space in the end. ';
+		$expected_result = '<span class"invisible-spaces">  </span>Two spaces at the begining, double<span class"invisible-spaces">  </span>and triple<span class"invisible-spaces">   </span>spaces in the middle, and one space in the end.<span class"invisible-spaces"> </span>';
+
+		$orig = prepare_original( $test_string );
+
+		$this->assertEquals( $orig, $expected_result );
+	}
+
 }
