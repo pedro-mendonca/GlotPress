@@ -95,7 +95,7 @@ class GP_Translation extends GP_Thing {
 	/**
 	 * Translation for a singular form.
 	 *
-	 * @var string $translation_1
+	 * @var string $translation_0
 	 */
 	public $translation_0;
 
