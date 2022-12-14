@@ -89,11 +89,241 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 		return;
 	}
 
+	$suffixes = array(
+
+		// Plurals of singular nouns.
+		// https://www.thefreedictionary.com/Forming-Plurals.htm.
+		// https://preply.com/en/blog/simple-rules-for-the-formation-of-plural-nouns-in-english/.
+		'noun'         => array(
+
+			// Ending in a sibilant. Suffix: '-es'.
+			array(
+				'endings'  => array(
+					'ss' => null, // Kiss and kiss-es.
+					'z'  => null, // Waltz and waltz-es.
+					'x'  => null, // Box and box-es.
+					'sh' => null, // Dish and dish-es.
+					'ch' => null, // Coach and coach-es.
+				),
+				'preceded' => null,
+				'add'      => 'es', // Add 'es'.
+			),
+
+			// Ending with '-y' preceded by vowel. Suffix: '-s'.
+			array(
+				'endings'  => array(
+					'y' => null, // Delay and delay-s, key and key-s, toy and toy-s, guy and guy-s.
+				),
+				'preceded' => '[aeiou]', // Preceded by any vowel.
+				'add'      => 's',       // Add 's'.
+			),
+
+			// Ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
+			array(
+				'endings'  => array(
+					'y' => 'i',  // Lady and ladi-es. Change to 'i-es'.
+					'o' => null, // Hero and hero-es, tomato and tomato-es.
+				),
+				'preceded' => '[b-df-hj-np-tv-xz]', // Preceded by any consonant.
+				'add'      => 'es',                 // Add 'es'.
+			),
+
+			// Ending with '-an'. Suffix: '-en'.
+			array(
+				'endings'  => array(
+					'an' => 'en', // Woman and wom-en. Change to '-en'.
+				),
+				'preceded' => null,
+				'add'      => null,
+			),
+
+			// Ending with '-f', '-fe' or '-s'. Suffix: '-es'.
+			array(
+				'endings'  => array(
+					'fe' => 'v',  // Wife and wiv-es. Change to 'v-es'.
+					'f'  => 'v',  // Leaf and leav-es, wolf and wolv-es. Change to 'v-es'.
+					's'  => null, // Bus and bus-es, lens and len-ses.
+				),
+				'preceded' => null,
+				'add'      => 'es', // Add 'es'.
+			),
+
+			// Fallback suffix for most nouns not ended with '-s'. Suffix: '-s'.
+			array(
+				'endings'  => array(
+					'\w(?<!z|x|sh|ch|s|y|an|fe)' => null, // None of the above except 'f' because of words like 'Chief' which plural is '-s'.
+				),
+				'preceded' => null,
+				'add'      => 's', // Add 's'.
+			),
+		),
+
+		// Verb tenses.
+		'verb'         => array(
+
+			// Third-person singular for verbs.
+			// Ending in a sibilant. Suffix: '-es'.
+			array(
+				'endings'  => array(
+					'ss' => null, // Pass and pass-es.
+					'z'  => null, // Quiz and quiz-es.
+					'x'  => null, // Fix and fix-es.
+					'sh' => null, // Push and push-es.
+					'ch' => null, // Watch and watch-es.
+				),
+				'preceded' => null,
+				'add'      => 'es', // Add 'es'.
+			),
+
+			// Ending with '-y' preceded by vowel. Suffix: '-s'.
+			array(
+				'endings'  => array(
+					'y' => null, // Play and play-s.
+				),
+				'preceded' => '[aeiou]', // Any vowel.
+				'add'      => 's',       // Add 's'.
+			),
+
+			// Ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
+			array(
+				'endings'  => array(
+					'y' => 'i',  // Try and tri-es. Change to 'i-es'.
+					'o' => null, // Go and go-es, do and do-es.
+				),
+				'preceded' => '[b-df-hj-np-tv-xz]', // Any consonant.
+				'add'      => 'es',                 // Add 'es'.
+			),
+
+			// Fallback suffix for most verbs. Suffix: '-s'.
+			array(
+				'endings'  => array(
+					'\w(?<!z|x|sh|ch|s|y|o)' => null, // None of the above. Format and format-s, make and make-s, pull and pull-s.
+				),
+				'preceded' => null,
+				'add'      => 's',  // Add 's'.
+			),
+
+			// Past simple tense and past participle of verbs. Suffix '-ed'.
+			array(
+				'endings'  => array(
+					// Not ending with '-e'.
+					'\w(?<!e)' => null, // Fix and fix-ed, push and push-ed.
+					// Ending with '-e'.
+					'e'        => '', // Contribute and contribut-ed, delete and delet-ed. Change to '-ed'.
+				),
+				'preceded' => null,
+				'add'      => 'ed', // Add 'ed'.
+			),
+
+			// Present participle and gerund of verbs. Suffix '-ing'.
+			array(
+				'endings'  => array(
+					// Not ending with '-e', or ending with '-ee', '-ye' -or '-oe'.
+					'\w(?<!e)' => null, // Fix and fix-ing, push and push-ing.
+					'ee'       => null, // Agree and agree-ing, see and see-ing.
+					'ye'       => null, // Dye and dye-ing.
+					'oe'       => null, // Tiptoe and tiptoe-ing.
+					// Ending with single '-e'.
+					'e'        => '', // Contribute and contribut-ing, delete and delet-ing, care and car-ing. Change to '-ing'.
+				),
+				'preceded' => null,
+				'add'      => 'ing', // Add 'ing'.
+			),
+
+			// Nouns formed by Verbs.
+			// https://www.thefreedictionary.com/Commonly-Confused-Suffixes-tion-vs-sion.htm.
+
+			// Verbs that form nouns ending with suffix '-tion'.
+			array(
+				'endings'  => array(
+					// General.
+					'ate'    => 'a',     // Abbreviate and abbrevia-tion. Change to 'a-tion'.
+					'ize'    => 'iza',   // Authorize and authoriza-tion. Change to 'iza-tion'.
+					'ify'    => 'ifica', // Specify and specifica-tion. Change to 'ifica-tion'.
+					'efy'    => 'efac',  // Liquefy and liquefac-tion. Change to 'efaca-tion'.
+					'aim'    => 'ama',   // Exclaim and exclama-tion. Change to 'ama-tion'.
+					'pt'     => 'p',     // Encrypt and encryp-tion. Change to 'p-tion'.
+					'scribe' => 'scrip', // Subscribe and subscrip-tion. Change to 'scrip-tion'.
+					'ceive'  => 'cep',   // Perceive and percep-tion. Change to 'cep-tion'.
+					'sume'   => 'sump',  // Resume and resump-tion. Change to 'sump-tion'.
+					'ct'     => 'c',     // Correct and correc-tion. Change to 'c-tion'.
+					'ete'    => 'e',     // Delete and dele-tion. Change to 'e-tion'.
+					'it'     => 'i',     // Edit and edi-tion. Change to 'i-tion'.
+					'ite'    => 'i',     // Ignite and igni-tion. Change to 'i-tion'.
+					'ute'    => 'u',     // Contribute and contribu-tion. Change to 'u-tion'.
+					'olve'   => 'olu',   // Resolve and resolu-tion. Change to 'olu-tion'.
+					'ose'    => 'osi',   // Compose and composi-tion. Change to 'osi-tion'.
+					// After 'n' cases.
+					'tain'   => 'ten',   // Abstain and absten-tion. Change to 'ten-tion'.
+					'vene'   => 'ven',   // Contravene and contraven-tion. Change to 'ven-tion'.
+					'vent'   => 'ven',   // Prevent and preven-tion. Change to 'ven-tion'.
+					// After 'r' cases.
+					'rt'     => 'r',     // Insert and inser-tion. Change to 'r-tion'.
+				),
+				'preceded' => null,
+				'add'      => 'tion', // Add 'tion'.
+			),
+
+			// Verbs that form nouns ending with suffix '-sion'.
+			array(
+				'endings'  => array(
+					// General.
+					'ade'  => 'a',   // Invade and inva-sion. Change to 'a-sion'.
+					'cede' => 'ces', // Precede and preces-sion. Change to 'ces-sion'.
+					'ide'  => 'i',   // Decide and deci-sion. Change to 'i-sion'.
+					'ode'  => 'o',   // Explode and explo-sion. Change to 'o-sion'.
+					'ude'  => 'u',   // Exclude and exclu-sion. Change to 'u-sion'.
+					'ise'  => 'i',   // Supervise and supervi-sion. Change to 'i-sion'.
+					'use'  => 'u',   // Confuse and confu-sion. Change to 'u-sion'.
+					'pel'  => 'pul', // Expel and expul-sion. Change to 'pul-sion'.
+					'mit'  => 'mis', // Submit and submis-sion. Change to 'mis-sion'.
+					'ss'   => 's',   // Compress and compres-sion. Change to 's-sion'.
+					// After 'n' cases.
+					'end'  => 'en',  // Extend and exten-sion. Change to 'en-sion'.
+					// After 'r' cases.
+					'vert' => 'ver', // Convert and conver-sion. Change to 'ver-sion'.
+					'erse' => 'er',  // Disperse and disper-sion. Change to 'er-sion'.
+					'ur'   => 'ur',  // Recur and recur-sion. Change to 'ur-sion'.
+					'erge' => 'er',  // Emerge and emer-sion. Change to 'er-sion'.
+				),
+				'preceded' => null,
+				'add'      => 'sion', // Add 'sion'.
+			),
+
+		),
+
+		// Plurals of adverbs.
+		'adjective'    => array(),
+
+		// Plurals of adverbs.
+		'adverb'       => array(),
+
+		// Plurals of interjections.
+		'interjection' => array(),
+
+		// Plurals of conjunctions.
+		'conjunction'  => array(),
+
+		// Plurals of prepositions.
+		'preposition'  => array(),
+
+		// Plurals of pronouns.
+		'pronoun'      => array(),
+
+		// Plurals of expressions.
+		'expression'   => array(),
+
+		// Plurals of abbreviations.
+		'abbeviation'  => array(),
+
+	);
+
 	$glossary_entries_suffixes = array();
 
 	// Create array of glossary terms, longest first.
-	foreach ( $glossary_entries as $key => $value ) {
+	foreach ( $glossary_entries as $value ) {
 		$term = strtolower( $value->term );
+		$type = $value->part_of_speech;
 
 		// Check if is multiple word term.
 		if ( preg_match( '/\s/', $term ) ) {
@@ -103,33 +333,47 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			continue;
 		}
 
-		$suffixes = array();
-		if ( 'y' === substr( $term, -1 ) ) {
-			$term       = substr( $term, 0, -1 );
-			$suffixes[] = 'y';
-			$suffixes[] = 'ies';
-			$suffixes[] = 'ys';
-		} elseif ( 'f' === substr( $term, -1 ) ) {
-			$term       = substr( $term, 0, -1 );
-			$suffixes[] = 'f';
-			$suffixes[] = 'ves';
-			$terms[]    = substr( $term, 0, -1 ) . 'ves';
-		} elseif ( 'fe' === substr( $term, -2 ) ) {
-			$term       = substr( $term, 0, -2 );
-			$suffixes[] = 'fe';
-			$suffixes[] = 'ves';
-		} elseif ( 'an' === substr( $term, -2 ) ) {
-			$term       = substr( $term, 0, -2 );
-			$suffixes[] = 'an';
-			$suffixes[] = 'en';
-		} else {
-			$suffixes[] = 's';
-			$suffixes[] = 'es';
-			$suffixes[] = 'ed';
-			$suffixes[] = 'ing';
-		}
+		// Loop through rules.
+		foreach ( $suffixes[ $type ] as $rule ) {
 
-		$glossary_entries_suffixes[ $term ] = $suffixes;
+			// Loop through rule endings.
+			foreach ( $rule['endings'] as $ending => $change ) {
+
+				// Check if noun ends with known suffix.
+				if ( preg_match( '/' . $rule['preceded'] . $ending . '\b/i', $term ) ) {
+
+					// Build suffix with changes and additions.
+					$suffix = ( is_null( $change ) ? '' : $change ) . ( $rule['add'] ? $rule['add'] : '' );
+
+					// Set key.
+					$key = is_null( $change ) ? $term : substr( $term, 0, - strlen( $ending ) );
+
+					// Check if key term is set.
+					if ( ! isset( $glossary_entries_suffixes[ $key ] ) ) {
+						// Add the key term with empty array.
+						$glossary_entries_suffixes[ $key ] = array();
+					}
+
+					// If the ending changes, also add the ending.
+					if ( ! is_null( $change ) ) {
+
+						// Check if ending already exist in array of suffixes.
+						if ( ! in_array( $ending, $glossary_entries_suffixes[ $key ], true ) ) {
+							// Add the ending to the suffixes.
+							$glossary_entries_suffixes[ $key ][] = $ending;
+						}
+					}
+
+					// Check if suffix already exist in array of suffixes.
+					if ( ! in_array( $suffix, $glossary_entries_suffixes[ $key ], true ) ) {
+						// Add suffix.
+						$glossary_entries_suffixes[ $key ][] = $suffix;
+					}
+
+					break;
+				}
+			}
+		}
 	}
 
 	// Sort by length in descending order.
@@ -213,7 +457,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		}
 
 		// Remove the trailing |.
-		$terms_search  = substr( $terms_search, 0, -1 );
+		$terms_search  = rtrim( $terms_search, '|' );
 		$terms_search .= ')\b';
 	}
 
