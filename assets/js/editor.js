@@ -224,7 +224,7 @@ $gp.editor = (
 
 				return false;
 			},
-			update_filter_count: function( previous_status, current_status ) {
+			update_filter_count: function( previous_status, current_status, current_warnings ) {
 
 				if ( 'status-rejected' === previous_status ) {
 					previous_status = 'untranslated';
@@ -240,6 +240,8 @@ $gp.editor = (
 				}
 				console.log( 'Current status: ' + current_status );
 
+				console.log( 'Current warnings: ' + current_warnings );
+
 				// Subtract 1 count on the previous status.
 				previous_status_count = $( '#upper-filters-toolbar a.' + previous_status ).find( '.count' ).text().replace( /[\(\)]/g, '' );
 				previous_status_count--;
@@ -251,6 +253,12 @@ $gp.editor = (
 				current_status_count++;
 				$( '#upper-filters-toolbar a.' + current_status + ' .count' ).text( '(' + current_status_count + ')' );
 				console.log( current_status_count );
+
+				// Add 1 count on the current status.
+				warnings_status_count = $( '#upper-filters-toolbar a.status-warnings' ).find( '.count' ).text().replace( /[\(\)]/g, '' );
+				warnings_status_count++;
+				$( '#upper-filters-toolbar a.status-warnings .count' ).text( '(' + warnings_status_count + ')' );
+				console.log( warnings_status_count );
 
 			},
 			replace_current: function( html ) {
@@ -308,7 +316,8 @@ $gp.editor = (
 							$gp.editor.replace_current( response[ original_id ] );
 						}
 
-						$gp.editor.update_filter_count( previous_status[0], 'current' ); // TODO: Check permissions.
+						$gp.editor.update_filter_count( previous_status[0], 'current', $gp.editor.current.hasClass( 'has-warnings' ) ); // TODO: Check permissions.
+						 // TODO: Check warnings.
 
 						if ( $gp.editor.current.hasClass( 'no-warnings' ) ) {
 							$gp.editor.next();
@@ -397,7 +406,7 @@ $gp.editor = (
 						$gp.notices.success( 'Status set!' );
 						$gp.editor.replace_current( response );
 						$gp.editor.next();
-						$gp.editor.update_filter_count( previous_status[0], status );
+						$gp.editor.update_filter_count( previous_status[0], status, $gp.editor.current.hasClass( 'has-warnings' ) );
 					},
 					error: function( xhr, msg ) {
 						button.prop( 'disabled', false );
