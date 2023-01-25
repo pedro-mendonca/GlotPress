@@ -131,8 +131,17 @@ $i = 0;
 
 		$filter_links[] = gp_link_get(
 			$url,
-			// Translators: %s is the total strings count for the current translation set.
-			sprintf( __( 'All&nbsp;<span class="count">(%s)</span>', 'glotpress' ), number_format_i18n( $translation_set->all_count() ) ),
+			sprintf(
+				// Translators: %s is the total strings count for the current translation set.
+				_nx(
+					'All&nbsp;<span class="count">(%s)</span>',
+					'All&nbsp;<span class="count">(%s)</span>',
+					$translation_set->all_count(),
+					'Strings filter count',
+					'glotpress'
+				),
+				number_format_i18n( $translation_set->all_count() )
+			),
 			array( 'class' => 'all' . ( $is_current_filter ? ' ' . $current_filter_class : '' ) )
 		);
 
@@ -145,8 +154,17 @@ $i = 0;
 
 		$filter_links[] = gp_link_get(
 			add_query_arg( $translated_filters, $url ),
-			// Translators: %s is the translated strings count for the current translation set.
-			sprintf( __( 'Translated&nbsp;<span class="count">(%s)</span>', 'glotpress' ), number_format_i18n( $translation_set->current_count() ) ),
+			sprintf(
+				// Translators: %s is the translated strings count for the current translation set.
+				_nx(
+					'Translated&nbsp;<span class="count">(%s)</span>',
+					'Translated&nbsp;<span class="count">(%s)</span>',
+					$translation_set->current_count(),
+					'Strings filter count',
+					'glotpress'
+				),
+				number_format_i18n( $translation_set->current_count() )
+			),
 			array( 'class' => 'status-current' . ( $is_current_filter ? ' ' . $current_filter_class : '' ) )
 		);
 
@@ -159,8 +177,17 @@ $i = 0;
 
 		$filter_links[] = gp_link_get(
 			add_query_arg( $untranslated_filters, $url ),
-			// Translators: %s is the untranslated strings count for the current translation set.
-			sprintf( __( 'Untranslated&nbsp;<span class="count">(%s)</span>', 'glotpress' ), number_format_i18n( $translation_set->untranslated_count() ) ),
+			sprintf(
+				// Translators: %s is the untranslated strings count for the current translation set.
+				_nx(
+					'Untranslated&nbsp;<span class="count">(%s)</span>',
+					'Untranslated&nbsp;<span class="count">(%s)</span>',
+					$translation_set->untranslated_count(),
+					'Strings filter count',
+					'glotpress'
+				),
+				number_format_i18n( $translation_set->untranslated_count() )
+			),
 			array( 'class' => 'untranslated' . ( $is_current_filter ? ' ' . $current_filter_class : '' ) )
 		);
 
@@ -173,8 +200,17 @@ $i = 0;
 
 		$filter_links[] = gp_link_get(
 			add_query_arg( $waiting_filters, $url ),
-			// Translators: %s is the waiting strings count for the current translation set.
-			sprintf( __( 'Waiting&nbsp;<span class="count">(%s)</span>', 'glotpress' ), number_format_i18n( $translation_set->waiting_count() ) ),
+			sprintf(
+				// Translators: %s is the waiting strings count for the current translation set.
+				_nx(
+					'Waiting&nbsp;<span class="count">(%s)</span>',
+					'Waiting&nbsp;<span class="count">(%s)</span>',
+					$translation_set->waiting_count(),
+					'Strings filter count',
+					'glotpress'
+				),
+				number_format_i18n( $translation_set->waiting_count() )
+			),
 			array( 'class' => 'status-waiting' . ( $is_current_filter ? ' ' . $current_filter_class : '' ) )
 		);
 
@@ -188,8 +224,17 @@ $i = 0;
 		if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) {  // todo: delete when we merge the gp-translation-helpers in GlotPress
 			$filter_links[] = gp_link_get(
 				add_query_arg( $changesrequested_filters, $url ),
-				// Translators: %s is the changes requested strings count for the current translation set.
-				sprintf( __( 'Changes requested&nbsp;<span class="count">(%s)</span>', 'glotpress' ), number_format_i18n( $translation_set->changesrequested_count() ) ),
+				sprintf(
+					// Translators: %s is the changes requested strings count for the current translation set.
+					_nx(
+						'Change requested&nbsp;<span class="count">(%s)</span>',
+						'Changes requested&nbsp;<span class="count">(%s)</span>',
+						$translation_set->changesrequested_count(),
+						'Strings filter count',
+						'glotpress'
+					),
+					number_format_i18n( $translation_set->changesrequested_count() )
+				),
 				array( 'class' => 'status-changesrequested' . ( $is_current_filter ? ' ' . $current_filter_class : '' ) )
 			);
 		}
@@ -203,8 +248,17 @@ $i = 0;
 
 		$filter_links[] = gp_link_get(
 			add_query_arg( $fuzzy_filters, $url ),
-			// Translators: %s is the fuzzy strings count for the current translation set.
-			sprintf( __( 'Fuzzy&nbsp;<span class="count">(%s)</span>', 'glotpress' ), number_format_i18n( $translation_set->fuzzy_count() ) ),
+			sprintf(
+				// Translators: %s is the fuzzy strings count for the current translation set.
+				_nx(
+					'Fuzzy&nbsp;<span class="count">(%s)</span>',
+					'Fuzzy&nbsp;<span class="count">(%s)</span>',
+					$translation_set->fuzzy_count(),
+					'Strings filter count',
+					'glotpress'
+				),
+				number_format_i18n( $translation_set->fuzzy_count() )
+			),
 			array( 'class' => 'status-fuzzy' . ( $is_current_filter ? ' ' . $current_filter_class : '' ) )
 		);
 
@@ -217,8 +271,17 @@ $i = 0;
 
 		$filter_links[] = gp_link_get(
 			add_query_arg( $warning_filters, $url ),
-			// Translators: %s is the strings with warnings count for the current translation set.
-			sprintf( __( 'Warnings&nbsp;<span class="count">(%s)</span>', 'glotpress' ), number_format_i18n( $translation_set->warnings_count() ) ),
+			sprintf(
+				// Translators: %s is the strings with warnings count for the current translation set.
+				_nx(
+					'Warning&nbsp;<span class="count">(%s)</span>',
+					'Warnings&nbsp;<span class="count">(%s)</span>',
+					$translation_set->warnings_count(),
+					'Strings filter count',
+					'glotpress'
+				),
+				number_format_i18n( $translation_set->warnings_count() )
+			),
 			array( 'class' => 'status-warnings' . ( $is_current_filter ? ' ' . $current_filter_class : '' ) )
 		);
 
@@ -237,8 +300,16 @@ $i = 0;
 
 			$filter_links[] = gp_link_get(
 				add_query_arg( $custom_filter, $url ),
-				// Translators: %s is the strings with the current filter count for the current translation set.
-				sprintf( __( 'Current&nbsp;Filter&nbsp;<span class="count">(%s)</span>', 'glotpress' ), number_format_i18n( $total_translations_count ) ),
+				sprintf(
+					// Translators: %s is the strings with the current filter count for the current translation set.
+					_x(
+						'Current&nbsp;<span class="count">(%s)</span>',
+						$total_translations_count,
+						'Strings filter count',
+						'glotpress'
+					),
+					number_format_i18n( $total_translations_count )
+				),
 				array( 'class' => $current_filter_class )
 			);
 		}
