@@ -224,6 +224,35 @@ $gp.editor = (
 
 				return false;
 			},
+			update_filter_count: function( previous_status, current_status ) {
+
+				if ( 'status-rejected' === previous_status ) {
+					previous_status = 'untranslated';
+				} else {
+					//previous_status = 'status-' + previous_status;
+				}
+				console.log( 'Previous status: ' + previous_status );
+
+				if ( 'rejected' === current_status ) {
+					current_status = 'untranslated';
+				} else {
+					current_status = 'status-' + current_status;
+				}
+				console.log( 'Current status: ' + current_status );
+
+				// Subtract 1 count on the previous status.
+				previous_status_count = $( '#upper-filters-toolbar a.' + previous_status ).find( '.count' ).text().replace( /[\(\)]/g, '' );
+				previous_status_count--;
+				$( '#upper-filters-toolbar a.' + previous_status + ' .count' ).text( '(' + previous_status_count + ')' );
+				console.log( previous_status_count );
+
+				// Add 1 count on the current status.
+				current_status_count = $( '#upper-filters-toolbar a.' + current_status ).find( '.count' ).text().replace( /[\(\)]/g, '' );
+				current_status_count++;
+				$( '#upper-filters-toolbar a.' + current_status + ' .count' ).text( '(' + current_status_count + ')' );
+				console.log( current_status_count );
+
+			},
 			replace_current: function( html ) {
 				var old_current;
 
@@ -250,6 +279,7 @@ $gp.editor = (
 				editor = $gp.editor.current;
 				button.prop( 'disabled', true );
 				$gp.notices.notice( 'Saving&hellip;' );
+				previous_status = editor.attr( 'class' ).match( /(status-\w+)|(untranslated)/ ); // TODO: Don't deal with untranslated.
 
 				data = {
 					original_id: editor.original_id,
@@ -277,6 +307,8 @@ $gp.editor = (
 						for ( original_id in response ) {
 							$gp.editor.replace_current( response[ original_id ] );
 						}
+
+						$gp.editor.update_filter_count( previous_status[0], 'current' ); // TODO: Check permissions.
 
 						if ( $gp.editor.current.hasClass( 'no-warnings' ) ) {
 							$gp.editor.next();
@@ -334,6 +366,7 @@ $gp.editor = (
 				}
 
 				editor = $gp.editor.current;
+				previous_status = editor.attr( 'class' ).match( /(status-\w+)|(untranslated)/ ); // TODO: Don't deal with untranslated.
 
 				$( '[id*="translation_' + editor.original_id + '_"]' ).each( function() {
 					if ( this.value !== this.defaultValue ) {
@@ -364,6 +397,7 @@ $gp.editor = (
 						$gp.notices.success( 'Status set!' );
 						$gp.editor.replace_current( response );
 						$gp.editor.next();
+						$gp.editor.update_filter_count( previous_status[0], status );
 					},
 					error: function( xhr, msg ) {
 						button.prop( 'disabled', false );
