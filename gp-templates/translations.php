@@ -29,7 +29,15 @@ wp_localize_script(
 	array(
 		'sort'            => __( 'Sort', 'glotpress' ),
 		'filter'          => __( 'Filter', 'glotpress' ),
-		'translation_set' => $translation_set,
+		'translation_set' => array(
+			'all_count'              => $translation_set->all_count(),
+			'current_count'          => $translation_set->current_count(),
+			'untranslated_count'     => $translation_set->untranslated_count(),
+			'waiting_count'          => $translation_set->waiting_count(),
+			'changesrequested_count' => $translation_set->changesrequested_count(),
+			'fuzzy_count'            => $translation_set->fuzzy_count(),
+			'warnings_count'         => $translation_set->warnings_count(),
+		),
 	)
 );
 
