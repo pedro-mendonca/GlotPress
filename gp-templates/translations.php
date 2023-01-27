@@ -27,8 +27,9 @@ wp_localize_script(
 	'gp-translations-page',
 	'$gp_translations_options',
 	array(
-		'sort'   => __( 'Sort', 'glotpress' ),
-		'filter' => __( 'Filter', 'glotpress' ),
+		'sort'            => __( 'Sort', 'glotpress' ),
+		'filter'          => __( 'Filter', 'glotpress' ),
+		'translation_set' => $translation_set,
 	)
 );
 
