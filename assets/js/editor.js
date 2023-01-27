@@ -1,4 +1,4 @@
-/* global $gp_editor_options, $gp, wp */
+/* global $gp_editor_options, $gp_translations_options, $gp, wp */
 /* eslint camelcase: "off" */
 $gp.editor = (
 	function( $ ) {
@@ -259,6 +259,16 @@ $gp.editor = (
 				warnings_status_count++;
 				$( '#upper-filters-toolbar a.status-warnings .count' ).text( '(' + warnings_status_count + ')' );
 				console.log( warnings_status_count );
+
+				$gp_translations_options.translation_set.all_count++;
+				$gp_translations_options.translation_set.current_count++;
+				$gp_translations_options.translation_set.untranslated_count++;
+				$gp_translations_options.translation_set.waiting_count++;
+				$gp_translations_options.translation_set.changesrequested_count++;
+				$gp_translations_options.translation_set.fuzzy_count++;
+				$gp_translations_options.translation_set.warnings_count++;
+
+				console.log( $gp_translations_options.translation_set );
 
 			},
 			replace_current: function( html ) {
