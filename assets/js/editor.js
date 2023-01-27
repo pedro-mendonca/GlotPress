@@ -225,7 +225,6 @@ $gp.editor = (
 				return false;
 			},
 			update_filter_count: function( previous_status, current_status, current_warnings ) {
-
 				if ( 'status-rejected' === previous_status ) {
 					previous_status = 'untranslated';
 				} else {
@@ -241,6 +240,52 @@ $gp.editor = (
 				console.log( 'Current status: ' + current_status );
 
 				console.log( 'Current warnings: ' + current_warnings );
+
+				switch ( previous_status ) {
+					case 'status-current':
+						$gp_translations_options.translation_set.current_count--;
+						$gp_translations_options.translation_set.all_count--;
+						break;
+					case 'untranslated':
+						$gp_translations_options.translation_set.untranslated_count--;
+						break;
+
+					case 'status-waiting':
+						$gp_translations_options.translation_set.waiting_count--;
+						break;
+					case 'status-changesrequested':
+						$gp_translations_options.translation_set.changesrequested_count--;
+						break;
+					case 'status-fuzzy':
+						$gp_translations_options.translation_set.fuzzy_count--;
+						break;
+					case 'status-warnings':
+						$gp_translations_options.translation_set.warnings_count--;
+						break;
+				}
+
+				switch ( current_status ) {
+					case 'status-current':
+						$gp_translations_options.translation_set.current_count++;
+						$gp_translations_options.translation_set.all_count++;
+						break;
+					case 'untranslated':
+						$gp_translations_options.translation_set.untranslated_count++;
+						break;
+
+					case 'status-waiting':
+						$gp_translations_options.translation_set.waiting_count++;
+						break;
+					case 'status-changesrequested':
+						$gp_translations_options.translation_set.changesrequested_count++;
+						break;
+					case 'status-fuzzy':
+						$gp_translations_options.translation_set.fuzzy_count++;
+						break;
+					case 'status-warnings':
+						$gp_translations_options.translation_set.warnings_count++;
+						break;
+				}
 
 				// Subtract 1 count on the previous status.
 				previous_status_count = $( '#upper-filters-toolbar a.' + previous_status ).find( '.count' ).text().replace( /[\(\)]/g, '' );
