@@ -585,26 +585,49 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertEquals( 1, $set->waiting_count() );
 	}
 
-	/*
-	 * Basic test to ensure root/variant data in GP_Locales exists.
-	 *
-	 * A more comprehensive test of the root/variant relationships would be nice, but due to the
-	 * high dependency on the database, test cases are extremely hard to create that actually
-	 * test a real scenario.
-	 */
-	function test_root_and_variant_locales() {
-		$gpl = new GP_Locales;
+	function test_when_update_a_waiting_translation_it_is_set_to_old_status() {
+		$user = $this->factory->user->create();
 
-		$us = $gpl->locales[ 'en' ];
-		$ca = $gpl->locales[ 'en-ca' ];
+		wp_set_current_user( $user );
+		$set = $this->factory->translation_set->create_with_project_and_locale( );
+		$original = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$translation_old = $this->factory->translation->create( array( 'user_id' => $user, 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'waiting' ) );
+		$this->assertTrue( $translation_old->set_as_waiting() );
+		$translation_waiting = $this->factory->translation->create( array( 'user_id' => $user, 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'waiting' ) );
+		$this->assertTrue( $translation_waiting->set_as_waiting() ); //$translation_old is now old
 
-		// Test to make sure en has no root variant.
-		$this->assertEquals( null, $us->variant_root );
+		$old_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'old' ) );
+		$waiting_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'waiting' ) );
 
-		// Test to make sure en_ca has en as it's root variant.
-		$this->assertEquals( 'en', $ca->variant_root );
+		$this->assertEquals( 1, $set->waiting_count() );
+		$this->assertEquals( 1, count( $waiting_translations ) );
+		$this->assertEquals( 1, count( $old_translations ) );
+	}
 
-		// Test to make sure en has en_ca listed as a variant.
-		$this->assertEquals( $ca->english_name, $us->variants[ 'en-ca' ] );
+	function test_when_update_a_waiting_translation_it_is_set_to_old_status_and_dont_set_as_old_the_suggestions_from_other_users() {
+		$user1 = $this->factory->user->create();
+		$user2 = $this->factory->user->create();
+
+		$set = $this->factory->translation_set->create_with_project_and_locale( );
+		$original = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+
+		wp_set_current_user( $user1 );
+		$translation1_old = $this->factory->translation->create( array( 'user_id' => $user1, 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'waiting' ) );
+		$this->assertTrue( $translation1_old->set_as_waiting() );
+
+		wp_set_current_user( $user2 );
+		$translation2 = $this->factory->translation->create( array( 'user_id' => $user2, 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'waiting' ) );
+		$this->assertTrue( $translation2->set_as_waiting() );
+
+		wp_set_current_user( $user1 );
+		$translation1_waiting = $this->factory->translation->create( array( 'user_id' => $user1, 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'waiting' ) );
+		$this->assertTrue( $translation1_waiting->set_as_waiting() ); //$translation1_old is now old
+
+		$old_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'old' ) );
+		$waiting_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'waiting' ) );
+
+		$this->assertEquals( 2, $set->waiting_count() );
+		$this->assertEquals( 2, count( $waiting_translations ) );
+		$this->assertEquals( 1, count( $old_translations ) );
 	}
 }
