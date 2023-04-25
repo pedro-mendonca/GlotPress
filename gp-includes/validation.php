@@ -179,10 +179,12 @@ class GP_Validation_Rules {
 	}
 
 	public function construct_error_message( $rule ) {
+
+		// Simple input field type.
 		$type_field = __( 'field', 'glotpress' );
 		$name_field = $rule['field'];
 
-		// Translate field names.
+		// Translate glossary field names.
 		switch ( $name_field ) {
 			case 'term':
 				$name_field = _x( 'Original term', 'glossary entry', 'glotpress' );
@@ -196,6 +198,16 @@ class GP_Validation_Rules {
 			case 'comment':
 				$name_field = _x( 'Comments', 'glossary entry', 'glotpress' );
 				break;
+		}
+
+		// Textarea input field type.
+		if ( 1 === preg_match( '/translation_[0-9]/', $name_field ) ) {
+			$type_field = __( 'textarea', 'glotpress' );
+			$name_field = sprintf(
+				/* translators: %d: Plural index of the translation. */
+				__( 'Translation %d', 'glotpress' ),
+				intval( substr( $name_field, 12 ) ) + 1
+			);
 		}
 
 		// Validation messages.
@@ -341,11 +353,6 @@ class GP_Validation_Rules {
 				),
 			),
 		);
-
-		if ( 1 === preg_match( '/translation_[0-9]/', $name_field ) ) {
-			$type_field = __( 'textarea', 'glotpress' );
-			$name_field = 'Translation ' . ( intval( substr( $name_field, 12 ) ) + 1 );
-		}
 
 		if ( 'positive' === $rule['kind'] ) {
 			return $messages[ $rule['rule'] ]['positive'];
