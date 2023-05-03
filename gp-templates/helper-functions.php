@@ -178,7 +178,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			$glossary_entries_reference[ $term ][] = $id;
 		}
 
-		$terms_search = '\b(';
+		$terms_search = '(';
 		foreach ( $glossary_entries_suffixes as $term => $suffixes ) {
 			$terms_search .= preg_quote( $term, '/' );
 
@@ -214,7 +214,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 
 		// Remove the trailing |.
 		$terms_search  = substr( $terms_search, 0, -1 );
-		$terms_search .= ')\b';
+		$terms_search .= ')';
 	}
 
 	// Split the singular string on glossary terms boundaries.
