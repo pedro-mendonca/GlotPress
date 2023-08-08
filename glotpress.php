@@ -211,12 +211,6 @@ add_filter(
 						"html": "Click here to import originals"
 					}
 				],
-				"gp-intro2" : [
-					{
-						"selector": "a",
-						"html": "Click here to open your project actions."
-					}
-				],
 				"ui-intro" : [
 					{
 						"title": "UI Introduction Tour",
