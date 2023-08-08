@@ -226,6 +226,21 @@ add_filter(
 						"html": "Click here to search"
 					}
 				],
+				"sorting-guide" : [
+					{
+						"title": "UI Introduction Tour",
+						"color" : "#f939c7"
+					},
+					{
+						"selector": ".revealing.sort",
+						"html": "Click here to reveal the sort field"
+					},
+					{
+						"reveal": ".revealing.sort",
+						"selector": ".filters-expanded input.is-primary",
+						"html": "Click here to sort"
+					}
+				],
 				"translation-guide" : [
 					{
 						"title": "How to translate",
