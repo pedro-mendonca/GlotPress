@@ -186,9 +186,9 @@ add_filter(
 	'gp_tour',
 	function( $tour ) {
 
-		$new_tour = json_decode( '
-			{
-				"gp-intro" : [
+		$new_tour = json_decode(
+			'{
+				"ui-intro" : [
 					{
 						"title": "GlotPress Introduction Tour",
 						"color" : "#826eb4"
@@ -211,7 +211,7 @@ add_filter(
 						"html": "Click here to import originals"
 					}
 				],
-				"ui-intro" : [
+				"filters-guide" : [
 					{
 						"title": "UI Introduction Tour",
 						"color" : "#3939c7"
@@ -232,8 +232,12 @@ add_filter(
 						"color" : "#f939c7"
 					},
 					{
-						"selector": ".strings .source",
+						"selector": ".strings .original",
 						"html": "This is the English text"
+					},
+					{
+						"selector": ".strings .textareas",
+						"html": "Here you can enter your translation"
 					},
 					{
 						"selector": ".actions .is-primary",
@@ -244,8 +248,6 @@ add_filter(
 			true
 		);
 
-		//var_dump( $new_tour );
-		//$new_tour = array();
 		return array_merge( $tour, $new_tour );
 	}
 );
