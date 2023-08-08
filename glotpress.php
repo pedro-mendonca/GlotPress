@@ -181,3 +181,77 @@ function gp_deactivate_plugin( $network_wide ) {
 
 }
 register_deactivation_hook( GP_PLUGIN_FILE, 'gp_deactivate_plugin' );
+
+add_filter(
+	'gp_tour',
+	function( $tour ) {
+
+		$new_tour = json_decode( '
+			{
+				"gp-intro" : [
+					{
+						"title": "GlotPress Introduction Tour",
+						"color" : "#826eb4"
+					},
+					{
+						"selector": ".gp-content p.actionlist a[href=\"/glotpress/projects/-new/\"]",
+						"html": "Click here to create a new translation Project."
+					},
+					{
+						"selector": ".gp-content p.actionlist a[href=\"/glotpress/languages/\"]",
+						"html": "Click here to check your projects per language."
+					},
+					{
+						"selector": "#project-actions-toggle",
+						"html": "Click here to open your project actions."
+					},
+					{
+						"reveal": "#project-actions-toggle",
+						"selector": ".gp-content p.actionlist a[href=\"/glotpress/projects/test/import-originals/\"]",
+						"html": "Click here to import originals"
+					}
+				],
+				"gp-intro2" : [
+					{
+						"selector": "a",
+						"html": "Click here to open your project actions."
+					}
+				],
+				"ui-intro" : [
+					{
+						"title": "UI Introduction Tour",
+						"color" : "#3939c7"
+					},
+					{
+						"selector": ".revealing.filter",
+						"html": "Click here to reveal the search field"
+					},
+					{
+						"reveal": ".revealing.filter",
+						"selector": ".filters-expanded input.is-primary",
+						"html": "Click here to search"
+					}
+				],
+				"translation-guide" : [
+					{
+						"title": "How to translate",
+						"color" : "#f939c7"
+					},
+					{
+						"selector": ".strings .source",
+						"html": "This is the English text"
+					},
+					{
+						"selector": ".actions .is-primary",
+						"html": "Submit your translation"
+					}
+				]
+			}',
+			true
+		);
+
+		//var_dump( $new_tour );
+		//$new_tour = array();
+		return array_merge( $tour, $new_tour );
+	}
+);

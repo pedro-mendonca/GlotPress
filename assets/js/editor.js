@@ -1,4 +1,4 @@
-/* global $gp_editor_options, $gp, wp */
+/* global $gp_editor_options, $gp, wp, WebuiPopovers */
 /* eslint camelcase: "off" */
 $gp.editor = (
 	function( $ ) {
