@@ -125,7 +125,7 @@ class GP_Format_Strings extends GP_Format {
 		$file = preg_replace_callback(
 			'/\/\*\s*(.*?)\s*\*\//s',
 			function( $m ) {
-				return str_replace( PHP_EOL, '\n', $m[0] );
+				return str_replace( "\n", '\n', $m[0] );
 			},
 			$file
 		);

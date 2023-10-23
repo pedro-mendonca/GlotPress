@@ -56,6 +56,7 @@ class GP_Test_Format_Strings extends GP_UnitTestCase {
 
 		foreach( $this->entries as $sample ) {
 			list( $context, $original, $translation, $comment ) = $sample;
+			$comment = str_replace( array( "\n" ), PHP_EOL, $comment );
 			$translatable_entry = new Translation_Entry( array('singular' => $original, 'context' => $context, 'extracted_comments' => $comment ) );
 			$entry = $translations->translate_entry( $translatable_entry );
 			$this->assertEquals( $original, $entry->singular );
@@ -70,6 +71,7 @@ class GP_Test_Format_Strings extends GP_UnitTestCase {
 
 		foreach( $this->entries as $sample ) {
 			list( $context, $original, $translation, $comment ) = $sample;
+			$comment = str_replace( array( "\n" ), PHP_EOL, $comment );
 			$translatable_entry = new Translation_Entry( array('singular' => $original, 'context' => $context, 'extracted_comments' => $comment ) );
 			$entry = $translations->translate_entry( $translatable_entry );
 			$this->assertEquals( $original, $entry->singular );
