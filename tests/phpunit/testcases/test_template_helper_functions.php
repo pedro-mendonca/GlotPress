@@ -35,7 +35,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	function test_map_glossary_entries_to_translation_originals_with_spaces_in_glossary() {
 		$test_string = 'Please set your favorite color scheme.';
 		$orig = '';
-		$expected_result = 'Please set your favorite <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;paleta de cores&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">color scheme</span>.';
+		$expected_result = 'Please set your favorite ' . $this->glossary_match( 'paleta de cores', 'noun', 'color scheme' ) . '.';
 
 		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
 
@@ -62,7 +62,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	function test_map_glossary_entries_to_translation_originals_with_hyphens_in_glossary() {
 		$test_string = 'Please set your favorite color-scheme.';
 		$orig = '';
-		$expected_result = 'Please set your favorite <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;paleta de cores&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">color-scheme</span>.';
+		$expected_result = 'Please set your favorite ' . $this->glossary_match( 'paleta de cores', 'noun', 'color-scheme' ) . '.';
 
 		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
 
@@ -89,7 +89,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	function test_map_glossary_entries_to_translation_originals_with_spaces_and_hyphens_in_glossary() {
 		$test_string = 'Prowdly built by your GlotPress WP-Team.';
 		$orig = '';
-		$expected_result = 'Prowdly built by your <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;Equipa-WP do GlotPress&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">GlotPress WP-Team</span>.';
+		$expected_result = 'Prowdly built by your ' . $this->glossary_match( 'Equipa-WP do GlotPress', 'noun', 'GlotPress WP-Team' ) . '.';
 
 		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
 
@@ -116,7 +116,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	function test_map_glossary_entries_to_translation_originals_with_word_count_priority() {
 		$test_string = 'Please set your admin color scheme.';
 		$orig = '';
-		$expected_result = 'Please set your <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;paleta de cores do administrador&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">admin color scheme</span>.';
+		$expected_result = 'Please set your ' . $this->glossary_match( 'paleta de cores do administrador', 'noun', 'admin color scheme' ) . '.';
 
 		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
 
@@ -158,7 +158,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 */
 	function test_map_glossary_entries_to_translation_originals_matching_only_some_terms_in_html_tags() {
 		$test_string = 'This is a strong test <strong class="strong-class another-class strong" alt="A strong alt" style="some-property:strong;">strong</strong>. This is another<dd style="a-property:strong;" class="strong strong-class another-class">strong</dd>, very strong test with<img src="strong.img" title="Strong text. Very strong strong text" class="a-very-strong-really-Strong-class" alt="Alt strong text" style="another-property:strong-very-strong;" />strong images, very strong images.<hr/ alt="Alt strong" class="Strong class StRoNg" title="StRoNg very strong" src="file.strong">. The final strong text.';
-		$expected_result = 'This is a <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> test &lt;strong class="strong-class another-class strong" alt="A <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> alt" style="some-property:strong;"&gt;<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span>&lt;/strong&gt;. This is another&lt;dd style="a-property:strong;" class="strong strong-class another-class"&gt;<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span>&lt;/dd&gt;, very <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> test with&lt;img src="strong.img" title="<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">Strong</span> text. Very <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> text" class="a-very-strong-really-Strong-class" alt="Alt <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> text" style="another-property:strong-very-strong;" /&gt;<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> images, very <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> images.&lt;hr/ alt="Alt <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span>" class="Strong class StRoNg" title="<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">StRoNg</span> very <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span>" src="file.strong"&gt;. The final <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> text.';
+		$expected_result = 'This is a ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' test &lt;strong class="strong-class another-class strong" alt="A ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' alt" style="some-property:strong;"&gt;' . $this->glossary_match( 'forte', 'noun', 'strong' ) . '&lt;/strong&gt;. This is another&lt;dd style="a-property:strong;" class="strong strong-class another-class"&gt;' . $this->glossary_match( 'forte', 'noun', 'strong' ) . '&lt;/dd&gt;, very ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' test with&lt;img src="strong.img" title="' . $this->glossary_match( 'forte', 'noun', 'Strong' ) . ' text. Very ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' text" class="a-very-strong-really-Strong-class" alt="Alt ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' text" style="another-property:strong-very-strong;" /&gt;' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' images, very ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' images.&lt;hr/ alt="Alt ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . '" class="Strong class StRoNg" title="' . $this->glossary_match( 'forte', 'noun', 'StRoNg' ) . ' very ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . '" src="file.strong"&gt;. The final ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' text.';
 
 		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
 
@@ -185,8 +185,8 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	function test_map_glossary_entries_to_translation_originals_matching_only_some_terms_in_html_tags_in_the_plural_origin() {
 		$singular_string          = 'This is a strong test <strong class="strong-class another-class strong" alt="A strong alt" style="some-property:strong;">strong</strong>. This is another<dd style="a-property:strong;" class="strong strong-class another-class">strong</dd>, very strong test with<img src="strong.img" title="Strong text. Very strong strong text" class="a-very-strong-really-Strong-class" alt="Alt strong text" style="another-property:strong-very-strong;" />strong images, very strong images.<hr/ alt="Alt strong" class="Strong class StRoNg" title="StRoNg very strong" src="file.strong">. The final strong text.';
 		$plural_string            = 'Plural. This is a strong test <strong class="strong-class another-class strong" alt="A strong alt" style="some-property:strong;">strong</strong>. This is another<dd style="a-property:strong;" class="strong strong-class another-class">strong</dd>, very strong test with<img src="strong.img" title="Strong text. Very strong strong text" class="a-very-strong-really-Strong-class" alt="Alt strong text" style="another-property:strong-very-strong;" />strong images, very strong images.<hr/ alt="Alt strong" class="Strong class StRoNg" title="StRoNg very strong" src="file.strong">. The final strong text.';
-		$singular_expected_result = 'This is a <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> test &lt;strong class="strong-class another-class strong" alt="A <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> alt" style="some-property:strong;"&gt;<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span>&lt;/strong&gt;. This is another&lt;dd style="a-property:strong;" class="strong strong-class another-class"&gt;<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span>&lt;/dd&gt;, very <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> test with&lt;img src="strong.img" title="<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">Strong</span> text. Very <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> text" class="a-very-strong-really-Strong-class" alt="Alt <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> text" style="another-property:strong-very-strong;" /&gt;<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> images, very <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> images.&lt;hr/ alt="Alt <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span>" class="Strong class StRoNg" title="<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">StRoNg</span> very <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span>" src="file.strong"&gt;. The final <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> text.';
-		$plural_expected_result   = 'Plural. This is a <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> test &lt;strong class="strong-class another-class strong" alt="A <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> alt" style="some-property:strong;"&gt;<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span>&lt;/strong&gt;. This is another&lt;dd style="a-property:strong;" class="strong strong-class another-class"&gt;<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span>&lt;/dd&gt;, very <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> test with&lt;img src="strong.img" title="<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">Strong</span> text. Very <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> text" class="a-very-strong-really-Strong-class" alt="Alt <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> text" style="another-property:strong-very-strong;" /&gt;<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> images, very <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> images.&lt;hr/ alt="Alt <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span>" class="Strong class StRoNg" title="<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">StRoNg</span> very <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span>" src="file.strong"&gt;. The final <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> text.';
+		$singular_expected_result = 'This is a ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' test &lt;strong class="strong-class another-class strong" alt="A ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' alt" style="some-property:strong;"&gt;' . $this->glossary_match( 'forte', 'noun', 'strong' ) . '&lt;/strong&gt;. This is another&lt;dd style="a-property:strong;" class="strong strong-class another-class"&gt;' . $this->glossary_match( 'forte', 'noun', 'strong' ) . '&lt;/dd&gt;, very ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' test with&lt;img src="strong.img" title="' . $this->glossary_match( 'forte', 'noun', 'Strong' ) . ' text. Very ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' text" class="a-very-strong-really-Strong-class" alt="Alt ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' text" style="another-property:strong-very-strong;" /&gt;' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' images, very ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' images.&lt;hr/ alt="Alt ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . '" class="Strong class StRoNg" title="' . $this->glossary_match( 'forte', 'noun', 'StRoNg' ) . ' very ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . '" src="file.strong"&gt;. The final ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' text.';
+		$plural_expected_result   = 'Plural. This is a ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' test &lt;strong class="strong-class another-class strong" alt="A ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' alt" style="some-property:strong;"&gt;' . $this->glossary_match( 'forte', 'noun', 'strong' ) . '&lt;/strong&gt;. This is another&lt;dd style="a-property:strong;" class="strong strong-class another-class"&gt;' . $this->glossary_match( 'forte', 'noun', 'strong' ) . '&lt;/dd&gt;, very ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' test with&lt;img src="strong.img" title="' . $this->glossary_match( 'forte', 'noun', 'Strong' ) . ' text. Very ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' text" class="a-very-strong-really-Strong-class" alt="Alt ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' text" style="another-property:strong-very-strong;" /&gt;' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' images, very ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' images.&lt;hr/ alt="Alt ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . '" class="Strong class StRoNg" title="' . $this->glossary_match( 'forte', 'noun', 'StRoNg' ) . ' very ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . '" src="file.strong"&gt;. The final ' . $this->glossary_match( 'forte', 'noun', 'strong' ) . ' text.';
 
 		$entry = new Translation_Entry( array( 'singular' => $singular_string, 'plural' => $plural_string ) );
 
@@ -209,8 +209,8 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	function test_map_glossary_entries_with_placeholders_glued_glossary_words() {
-		$test_string = 'I %%show want to reshow and show and test %3$show%4$show to %2$dshow%2$b test %show%d %sshow%d %3$sshow%4$s and%3$s%3$s test and show and %3$s show how show %4$s %%4%show %%show how.';
-		$expected_result = 'I %%<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> want to reshow and <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> and test %3$show%4$show to %2$d<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span>%2$b test %show%d %s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span>%d %3$s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span>%4$s and%3$s%3$s test and <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> and %3$s <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> how <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> %4$s %%4%show %%<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> how.';
+		$test_string = 'I %%show want to %sshow, reshow and show and test %3$show%4$show to %2$dshow%2$b test %show%d %sshow%d %3$sshow%4$s and%3$s%3$s test and show and %3$s show how show %4$s %%4%show %%show how.';
+		$expected_result = 'I %%' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' want to %s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ', reshow and ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' and test %3$show%4$show to %2$d' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%2$b test %show%d %s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%d %3$s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%4$s and%3$s%3$s test and ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' and %3$s ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' how ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' %4$s %%4%show %%' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' how.';
 
 		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
 
@@ -232,9 +232,9 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	function test_map_glossary_entries_with_placeholders_glued_glossary_words_in_the_plural_origin() {
-		$singular_string = 'I %%show want to reshow and show and test %3$show%4$show to %2$dshow%2$b test %show%d %sshow%d %3$sshow%4$s and%3$s%3$s test and show and %3$s show how show %4$s %%4%show %%show how.';
+		$singular_string = 'I %%show want to %sshow, reshow and show and test %3$show%4$show to %2$dshow%2$b test %show%d %sshow%d %3$sshow%4$s and%3$s%3$s test and show and %3$s show how show %4$s %%4%show %%show how.';
 		$plural_string   = 'Plural. ' . $singular_string;
-		$singular_expected_result = 'I %%<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> want to reshow and <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> and test %3$show%4$show to %2$d<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span>%2$b test %show%d %s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span>%d %3$s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span>%4$s and%3$s%3$s test and <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> and %3$s <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> how <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> %4$s %%4%show %%<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> how.';
+		$singular_expected_result = 'I %%' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' want to %s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ', reshow and ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' and test %3$show%4$show to %2$d' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%2$b test %show%d %s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%d %3$s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%4$s and%3$s%3$s test and ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' and %3$s ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' how ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' %4$s %%4%show %%' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' how.';
 		$plural_expected_result = 'Plural. ' . $singular_expected_result;
 
 		$entry = new Translation_Entry( array( 'singular' => $singular_string, 'plural' => $plural_string ) );
@@ -263,7 +263,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	function test_map_glossary_entries_with_placeholders_inside_another_words() {
 		$singular_string          = 'My alidads and granddaddies and dad and dads and skedaddle and hispanidad and dadaistic';
 		$plural_string            = 'Plural. ' . $singular_string;
-		$singular_expected_result = 'My alidads and granddaddies and <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;pai&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">dad</span> and <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;pai&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">dads</span> and skedaddle and hispanidad and dadaistic';
+		$singular_expected_result = 'My alidads and granddaddies and ' . $this->glossary_match( 'pai', 'noun', 'dad' ) . ' and ' . $this->glossary_match( 'pai', 'noun', 'dads' ) . ' and skedaddle and hispanidad and dadaistic';
 		$plural_expected_result   = 'Plural. ' . $singular_expected_result;
 
 		$entry = new Translation_Entry( array( 'singular' => $singular_string, 'plural' => $plural_string ) );
@@ -291,7 +291,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	function test_map_glossary_entries_with_variations() {
 		$singular_string          = 'Converting, converts, converted and convert.';
 		$plural_string            = 'Plural. ' . $singular_string;
-		$singular_expected_result = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;converter&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">Converting</span>, <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;converter&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">converts</span>, <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;converter&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">converted</span> and <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;converter&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">convert</span>.';
+		$singular_expected_result = $this->glossary_match( 'converter', 'verb', 'Converting' ) . ', ' . $this->glossary_match( 'converter', 'verb', 'converts' ) . ', ' . $this->glossary_match( 'converter', 'verb', 'converted' ) . ' and ' . $this->glossary_match( 'converter', 'verb', 'convert' ) . '.';
 		$plural_expected_result   = 'Plural. ' . $singular_expected_result;
 
 		$entry = new Translation_Entry( array( 'singular' => $singular_string, 'plural' => $plural_string ) );
@@ -360,7 +360,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	function test_map_glossary_entries_with_variations_and_placeholders() {
 		$singular_string          = 'Delay and delays, key and keys, toy and toys, guy and guys, %see%s %1$guys%2$s %ssee%s %1$gguys%2$s, converting and convert.';
 		$plural_string            = 'Plural. ' . $singular_string;
-		$singular_expected_result = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;retraso&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">Delay</span> and <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;retraso&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">delays</span>, <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;chave&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">key</span> and <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;chave&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">keys</span>, <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;xoguete&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">toy</span> and <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;xoguete&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">toys</span>, <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;rapaz&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">guy</span> and <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;rapaz&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">guys</span>, %see%s %1$guys%2$s %s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;ver&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">see</span>%s %1$g<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;rapaz&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">guys</span>%2$s, <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;converter&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">converting</span> and <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;converter&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">convert</span>.';
+		$singular_expected_result = $this->glossary_match( 'retraso', 'noun', 'Delay' ) . ' and ' . $this->glossary_match( 'retraso', 'noun', 'delays' ) . ', ' . $this->glossary_match( 'chave', 'noun', 'key' ) . ' and ' . $this->glossary_match( 'chave', 'noun', 'keys' ) . ', ' . $this->glossary_match( 'xoguete', 'noun', 'toy' ) . ' and ' . $this->glossary_match( 'xoguete', 'noun', 'toys' ) . ', ' . $this->glossary_match( 'rapaz', 'noun', 'guy' ) . ' and ' . $this->glossary_match( 'rapaz', 'noun', 'guys' ) . ', %see%s %1$guys%2$s %s' . $this->glossary_match( 'ver', 'verb', 'see' ) . '%s %1$g' . $this->glossary_match( 'rapaz', 'noun', 'guys' ) . '%2$s, ' . $this->glossary_match( 'converter', 'verb', 'converting' ) . ' and ' . $this->glossary_match( 'converter', 'verb', 'convert' ) . '.';
 		$plural_expected_result   = 'Plural. ' . $singular_expected_result;
 
 		$entry = new Translation_Entry( array( 'singular' => $singular_string, 'plural' => $plural_string ) );
@@ -427,7 +427,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 */
 	function test_prepare_original_with_leading_and_trailing_spaces_and_multiple_spaces_in_middle_of_single_line_strings() {
 		$test_string     = '  Two spaces at the begining, double  and triple   spaces in the middle, and one space in the end. ';
-		$expected_result = '<span class="invisible-spaces">  </span>Two spaces at the begining, double<span class="invisible-spaces">  </span>and triple<span class="invisible-spaces">   </span>spaces in the middle, and one space in the end.<span class="invisible-spaces"> </span>';
+		$expected_result = $this->highlight_invisible_spaces( '  ' ) . 'Two spaces at the begining, double' . $this->highlight_invisible_spaces( '  ' ) . 'and triple' . $this->highlight_invisible_spaces( '   ' ) . 'spaces in the middle, and one space in the end.' . $this->highlight_invisible_spaces( ' ' );
 
 		$orig = prepare_original( $test_string );
 
@@ -439,7 +439,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 */
 	function test_prepare_original_with_leading_and_trailing_spaces_and_multiple_spaces_in_middle_of_multi_line_strings() {
 		$test_string     = "  Two spaces at the begining and end, and in the line below:  \n\n One space at the begining and end \n\nNo spaces\n One space at the begining\nOne space at the end \n\n\nMultiple spaces  in   multiline  \n One space at the begining and end ";
-		$expected_result = "<span class=\"invisible-spaces\">  </span>Two spaces at the begining and end, and in the line below:<span class=\"invisible-spaces\">  </span><span class='invisibles' title='New line'>&crarr;</span>\n<span class='invisibles' title='New line'>&crarr;</span>\n<span class=\"invisible-spaces\"> </span>One space at the begining and end<span class=\"invisible-spaces\"> </span><span class='invisibles' title='New line'>&crarr;</span>\n<span class='invisibles' title='New line'>&crarr;</span>\nNo spaces<span class='invisibles' title='New line'>&crarr;</span>\n<span class=\"invisible-spaces\"> </span>One space at the begining<span class='invisibles' title='New line'>&crarr;</span>\nOne space at the end<span class=\"invisible-spaces\"> </span><span class='invisibles' title='New line'>&crarr;</span>\n<span class='invisibles' title='New line'>&crarr;</span>\n<span class='invisibles' title='New line'>&crarr;</span>\nMultiple spaces<span class=\"invisible-spaces\">  </span>in<span class=\"invisible-spaces\">   </span>multiline<span class=\"invisible-spaces\">  </span><span class='invisibles' title='New line'>&crarr;</span>\n<span class=\"invisible-spaces\"> </span>One space at the begining and end<span class=\"invisible-spaces\"> </span>";
+		$expected_result = $this->highlight_invisible_spaces( '  ' ) . 'Two spaces at the begining and end, and in the line below:' . $this->highlight_invisible_spaces( '  ' ) . $this->highlight_line_break() . $this->highlight_line_break() . $this->highlight_invisible_spaces( ' ' ) . 'One space at the begining and end' . $this->highlight_invisible_spaces( ' ' ) . $this->highlight_line_break() . $this->highlight_line_break() . 'No spaces' . $this->highlight_line_break() . $this->highlight_invisible_spaces( ' ' ) . 'One space at the begining' . $this->highlight_line_break() . 'One space at the end' . $this->highlight_invisible_spaces( ' ' ) . $this->highlight_line_break() . $this->highlight_line_break() . $this->highlight_line_break() . 'Multiple spaces' . $this->highlight_invisible_spaces( '  ' ) . 'in' . $this->highlight_invisible_spaces( '   ' ) . 'multiline' . $this->highlight_invisible_spaces( '  ' ) . $this->highlight_line_break() . $this->highlight_invisible_spaces( ' ' ) . 'One space at the begining and end' . $this->highlight_invisible_spaces( ' ' );
 
 		$orig = prepare_original( $test_string );
 
@@ -451,11 +451,87 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 */
 	function test_prepare_original_with_line_breaks_and_tabs() {
 		$test_string     = "This string has 2x tabs\t\tand a line\nbreak.";
-		$expected_result = "This string has 2x tabs<span class='invisibles' title='Tab character'>&rarr;</span>\t<span class='invisibles' title='Tab character'>&rarr;</span>\tand a line<span class='invisibles' title='New line'>&crarr;</span>\nbreak.";
+		$expected_result = "This string has 2x tabs" . $this->highlight_tab() . $this->highlight_tab() . "and a line" . $this->highlight_line_break() . "break.";
 
 		$orig = prepare_original( $test_string );
 
 		$this->assertEquals( $orig, $expected_result );
+	}
+
+	/**
+	 * Expects highlighting placeholders.
+	 *
+	 * @dataProvider provide_test_map_glossary_entries_to_translation_originals_with_entries_bounded_by_placeholders
+	 */
+	function test_prepare_original_with_placeholders( $test_string, $placeholders, $glossary_matches ) {
+		$orig = prepare_original( $test_string );
+		$this->assertEquals( $orig, $placeholders );
+	}
+
+	/**
+	 * Data provider.
+	 *
+	 * @var array
+	 */
+	function provide_test_map_glossary_entries_to_translation_originals_with_entries_bounded_by_placeholders() {
+
+		return array(
+
+			// Test with simple placeholders before and after glossary matches.
+
+			// Test %s.
+			array(
+				'test_string'      => 'Words with %ssimple %sstring%s placeholder%s.',
+				'placeholders'     => 'Words with ' . $this->highlight_placeholder( '%s' ) . 'simple ' . $this->highlight_placeholder( '%s' ) . 'string' . $this->highlight_placeholder( '%s' ) . ' ' . 'placeholder' . $this->highlight_placeholder( '%s' ) . '.',
+				'glossary_matches' => 'Words with %s' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%s ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%s.',
+			),
+			// Test %d.
+			array(
+				'test_string'      => 'Words with %dsimple %dinteger%d placeholder%d.',
+				'placeholders'     => 'Words with ' . $this->highlight_placeholder( '%d' ) . 'simple ' . $this->highlight_placeholder( '%d' ) . 'integer' . $this->highlight_placeholder( '%d' ) . ' placeholder' . $this->highlight_placeholder( '%d' ) . '.',
+				'glossary_matches' => 'Words with %d' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %d' . $this->glossary_match( 'n\u00famero inteiro', 'noun', 'integer' ) . '%d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%d.',
+			),
+			// Test %l.
+			array(
+				'test_string'      => 'Words with %lsimple %llist%l placeholder%l.',
+				'placeholders'     => 'Words with ' . $this->highlight_placeholder( '%l' ) . 'simple ' . $this->highlight_placeholder( '%l' ) . 'list' . $this->highlight_placeholder( '%l' ) . ' ' . 'placeholder' . $this->highlight_placeholder( '%l' ) . '.',
+				'glossary_matches' => 'Words with %l' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %l' . $this->glossary_match( 'lista', 'noun', 'list' ) . '%l ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%l.',
+			),
+			// Test %1s, %1d and %1l.
+			array(
+				'test_string'      => 'Words with %1ssimple %1sstring%1d placeholder%1l with minimum width.',
+				'placeholders'     => 'Words with ' . $this->highlight_placeholder( '%1s' ) . 'simple ' . $this->highlight_placeholder( '%1s' ) . 'string' . $this->highlight_placeholder( '%1d' ) . ' ' . 'placeholder' . $this->highlight_placeholder( '%1l' ) . ' with minimum width.',
+				'glossary_matches' => 'Words with %1s' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %1s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%1d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%1l with minimum width.',
+			),
+
+			// Test with numbered placeholders before and after glossary matches.
+
+			// Test %s.
+			array(
+				'test_string'      => 'Words with %1$snumbered %2$sstring%3$s placeholder%4$s.',
+				'placeholders'     => 'Words with ' . $this->highlight_placeholder( '%1$s' ) . 'numbered ' . $this->highlight_placeholder( '%2$s' ) . 'string' . $this->highlight_placeholder( '%3$s' ) . ' ' . 'placeholder' . $this->highlight_placeholder( '%4$s' ) . '.',
+				'glossary_matches' => 'Words with %1$s' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%3$s ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$s.',
+			),
+			// Test %d.
+			array(
+				'test_string'      => 'Words with %1$dnumbered %2$dinteger%3$d placeholder%4$d.',
+				'placeholders'     => 'Words with ' . $this->highlight_placeholder( '%1$d' ) . 'numbered ' . $this->highlight_placeholder( '%2$d' ) . 'integer' . $this->highlight_placeholder( '%3$d' ) . ' ' . 'placeholder' . $this->highlight_placeholder( '%4$d' ) . '.',
+				'glossary_matches' => 'Words with %1$d' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$d' . $this->glossary_match( 'n\u00famero inteiro', 'noun', 'integer' ) . '%3$d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$d.',
+			),
+			// Test %l.
+			array(
+				'test_string'      => 'Words with %1$lnumbered %2$llist%3$l placeholder%4$l.',
+				'placeholders'     => 'Words with ' . $this->highlight_placeholder( '%1$l' ) . 'numbered ' . $this->highlight_placeholder( '%2$l' ) . 'list' . $this->highlight_placeholder( '%3$l' ) . ' ' . 'placeholder' . $this->highlight_placeholder( '%4$l' ) . '.',
+				'glossary_matches' => 'Words with %1$l' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$l' . $this->glossary_match( 'lista', 'noun', 'list' ) . '%3$l ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$l.',
+			),
+			// Test %1$10s, %1$10d and %1$10l.
+			array(
+				'test_string'      => 'Words with %1$10snumbered %2$10sstring%3$10d placeholder%4$10l with minimum width.',
+				'placeholders'     => 'Words with ' . $this->highlight_placeholder( '%1$10s' ) . 'numbered ' . $this->highlight_placeholder( '%2$10s' ) . 'string' . $this->highlight_placeholder( '%3$10d' ) . ' ' . 'placeholder' . $this->highlight_placeholder( '%4$10l' ) . ' with minimum width.',
+				'glossary_matches' => 'Words with %1$10s' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$10s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%3$10d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$10l with minimum width.',
+			),
+		);
+
 	}
 
   function provide_test_map_glossary_entries_to_translation_originals() {
@@ -550,42 +626,13 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$this->assertMatchesRegularExpression( '#<span class="glossary-word" data-translations="\[{&quot;translation&quot;:&quot;' . $expected_result . '&quot;,[^"]+">[^<]+</span>#', $orig->singular_glossary_markup );
 	}
 
-  /**
+	/**
 	 * Expects matching glossary entries preceded and succeded by placeholders.
+	 *
+	 * @dataProvider provide_test_map_glossary_entries_to_translation_originals_with_entries_bounded_by_placeholders
 	 */
-	function test_map_glossary_entries_to_translation_originals_with_entries_bounded_by_placeholders() {
-		$test_strings = array(
-			// Test with simple placeholders before and after glossary matches.
-			'Words with %ssimple %sstring%s placeholder%s.',                        // Test %s.
-			'Words with %dsimple %dinteger%d placeholder%d.',                       // Test %d.
-			'Words with %lsimple %llist%l placeholder%l.',                          // Test %l.
-			'Words with %1ssimple %1sstring%1d placeholder%1l with minimum width.', // Test %1s, %1d and %1l.
-			// Test with numbered placeholders before and after glossary matches.
-			'Words with %1$snumbered %2$sstring%3$s placeholder%4$s.',                        // Test %s.
-			'Words with %1$dnumbered %2$dinteger%3$d placeholder%4$d.',                       // Test %d.
-			'Words with %1$lnumbered %2$llist%3$l placeholder%4$l.',                          // Test %l.
-			'Words with %1$1snumbered %2$1sstring%3$1d placeholder%4$1l with minimum width.', // Test %1$1s, %1$1d and %1$1l.
-		);
-		$test_string = implode( ' ', $test_strings );
-
+	function test_map_glossary_entries_to_translation_originals_with_entries_bounded_by_placeholders( $test_string, $placeholders, $glossary_matches ) {
 		$part_of_speech = 'noun';
-
-		$expected_results = array(
-			// Test with simple placeholders before and after glossary matches.
-			'Words with %s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;simples&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">simple</span> %s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;string&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">string</span>%s <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;vari\u00e1vel&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">placeholder</span>%s.',
-			'Words with %d<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;simples&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">simple</span> %d<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;n\u00famero inteiro&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">integer</span>%d <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;vari\u00e1vel&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">placeholder</span>%d.',
-			'Words with %l<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;simples&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">simple</span> %l<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;lista&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">list</span>%l <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;vari\u00e1vel&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">placeholder</span>%l.',
-			'Words with %1s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;simples&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">simple</span> %1s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;string&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">string</span>%1d <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;vari\u00e1vel&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">placeholder</span>%1l with minimum width.',
-			// Test with numbered placeholders before and after glossary matches.
-			'Words with %1$s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;numerado&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">numbered</span> %2$s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;string&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">string</span>%3$s <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;vari\u00e1vel&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">placeholder</span>%4$s.',
-			'Words with %1$d<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;numerado&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">numbered</span> %2$d<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;n\u00famero inteiro&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">integer</span>%3$d <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;vari\u00e1vel&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">placeholder</span>%4$d.',
-			'Words with %1$l<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;numerado&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">numbered</span> %2$l<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;lista&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">list</span>%3$l <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;vari\u00e1vel&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">placeholder</span>%4$l.',
-			'Words with %1$1s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;numerado&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">numbered</span> %2$1s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;string&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">string</span>%3$1d <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;vari\u00e1vel&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">placeholder</span>%4$1l with minimum width.',
-		);
-
-		$expected_result = implode( ' ', $expected_results );
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
 
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
@@ -633,9 +680,61 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			GP::$glossary_entry->create_and_select( $glossary_entry );
 		}
 
+		$entry = new Translation_Entry( array( 'singular' => $test_string ) );
 		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
 
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+		$this->assertEquals( $glossary_matches, $orig->singular_glossary_markup );
+
+	}
+
+	/**
+	 * Method to test the test_map_glossary_entries_to_translation_originals_with_entries_bounded_by_placeholders() function.
+	 *
+	 * @param string $glossary_entry   The translation of the glossary entry.
+	 * @param string $part_of_speech   The part of speech of the glossary entry.
+	 * @param string $original         The original matched string.
+	 * @return string                  The formated glossary match output.
+	 */
+	function glossary_match( $glossary_entry, $part_of_speech, $original ) {
+		return '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
+	}
+
+	/**
+	 * Method to test_prepare_original() and the map_glossary_entries_to_translation_originals() functions.
+	 *
+	 * @param string $placeholder  The placeholder to highlight.
+	 * @return string              The placeholder highlighted.
+	 */
+	function highlight_placeholder( $placeholder ) {
+		return '<span class="notranslate placeholder">' . $placeholder . '</span>';
+	}
+
+	/**
+	 * Method to test_prepare_original() and the map_glossary_entries_to_translation_originals() functions.
+	 *
+	 * @param string $spaces  The spaces to highlight.
+	 * @return string         The spaces highlighted.
+	 */
+	function highlight_invisible_spaces( $spaces ) {
+		return '<span class="invisible-spaces">' . $spaces . '</span>';
+	}
+
+	/**
+	 * Method to test_prepare_original() and the map_glossary_entries_to_translation_originals() functions.
+	 *
+	 * @return string  The tab highlighted.
+	 */
+	function highlight_tab() {
+		return "<span class='invisibles' title='Tab character'>&rarr;</span>\t";
+	}
+
+	/**
+	 * Method to test_prepare_original() and the map_glossary_entries_to_translation_originals() functions.
+	 *
+	 * @return string  The line break highlighted.
+	 */
+	function highlight_line_break() {
+		return "<span class='invisibles' title='New line'>&crarr;</span>\n";
 	}
 
 }
