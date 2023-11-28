@@ -91,7 +91,7 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 			$class = $set->variant_root !== null ? 'variant' : 'root';
 
 		?>
-			<tr class="<?php echo esc_attr( $class ); ?>">
+			<tr class="<?php echo esc_attr( $class ); ?>" data-locale="<?php echo esc_attr( $set->locale ); ?>">
 				<td class="locale-name">
 					<?php
 					if ( $set->variant_root !== null ) {
