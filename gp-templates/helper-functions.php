@@ -413,7 +413,6 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 	// Create array of glossary terms, longest first.
 	foreach ( $glossary_entries as $value ) {
-
 		$term = strtolower( $value->term );
 		$type = $value->part_of_speech;
 
@@ -428,6 +427,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 		// Filter out suffixes with empty values.
 		$suffixes = array_filter( $suffixes, fn( $value ) => ! empty( $value ) );
 
+		// Add suffixes for part_of_speech with rules.
 		if ( ! empty( $suffixes[ $type ] ) ) {
 			// Loop through rules.
 			foreach ( $suffixes[ $type ] as $rule ) {
@@ -482,6 +482,9 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 					}
 				}
 			}
+		} else {
+			// Add match for part_of_speech without any suffix rules.
+			$glossary_entries_suffixes[ $term ] = array();
 		}
 	}
 
