@@ -680,10 +680,26 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			if ( isset( $glossary_entries_reference[ $lower_chunk ] ) ) {
 				$glossary_data = array();
 
+				$entries = array();
+				foreach ( $glossary_entries_reference[ $lower_chunk ] as $glossary_entry_id ) {
+						$entries[] = $glossary_entries[ $glossary_entry_id ]->id;
+				}
+				//$entries = array_unique( $entries );
+				if ( $translation->singular === 'Troubleshooting' ) {
+					var_dump( $entries );
+				}
+
+
 				// Add glossary data for each matching entry.
 				foreach ( $glossary_entries_reference[ $lower_chunk ] as $glossary_entry_id ) {
 					// Get the glossary entry based on the back reference we created earlier.
 					$glossary_entry = $glossary_entries[ $glossary_entry_id ];
+
+					if ( $translation->singular === 'Troubleshooting' ) {
+						var_dump( $glossary_entry );
+					}
+
+
 
 					// If this is a locale glossary, make a note for the user.
 					$locale_entry = '';
