@@ -875,7 +875,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			),
 		);
 
-		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		//$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
 		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 

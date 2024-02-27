@@ -77,17 +77,15 @@ function gp_prepare_translation_textarea( $text ) {
 	return $text;
 }
 
+
 /**
- * Adds suffixes for use in map_glossary_entries_to_translation_originals().
+ * Suffixes for use in map_glossary_entries_to_translation_originals().
  *
- * @param array $glossary_entries An array of glossary entries to sort.
+ * @since 4.0.0
  *
  * @return array The suffixed entries.
  */
-function gp_glossary_add_suffixes( $glossary_entries ) {
-	if ( empty( $glossary_entries ) ) {
-		return;
-	}
+function gp_glossary_suffixes() {
 
 	$suffixes = array(
 
@@ -386,51 +384,36 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 	/**
 	 * Filter the list of Suffixes to match glossary terms for each Part of Speech.
 	 *
+	 * @param array $suffixes   Array of suffix rules per part_of_speech.
+	 *
 	 * @since 4.0.0
 	 */
 	$suffixes = apply_filters( 'gp_glossary_match_suffixes', $suffixes );
 
-	$glossary_entries_suffixes = array();
+	return $suffixes;
+}
 
-	// Find already suffixed entries and revert to the base form. Example: Troubleshooting -> Troubleshoot.
-	$glossary_entries_suffix_reverted = array();
-	foreach ( $glossary_entries as $key => $value ) {
 
-		$glossary_entries_suffix_reverted[ $key ] = $value;
-
-		$term = strtolower( $value->term );
-		$type = $value->part_of_speech;
-
-		// Check existent suffixes for part_of_speech with rules.
-		if ( ! empty( $suffixes[ $type ] ) ) {
-
-			// Loop through rules.
-			foreach ( $suffixes[ $type ] as $rule ) {
-
-				// Loop through rule endings.
-				foreach ( $rule['endings'] as $ending_pattern => $new_ending ) {
-
-					// Pattern of already suffixed terms.
-					$already_suffixed_pattern = '/' . $rule['preceded'] . sprintf( $new_ending, $ending_pattern ) . $rule['add'] . '\b/i';
-
-					// Check if suffix is already apply, to revert to base term.
-					if ( preg_match( $already_suffixed_pattern, $term, $match ) ) {
-
-						// Revert term suffix.
-						$term = str_replace( sprintf( $new_ending, $ending_pattern ) . $rule['add'], $ending_pattern, $term );
-
-						// Update term in the list.
-						$glossary_entries_suffix_reverted[ $key ]->term = $term;
-					}
-				}
-			}
-		}
+/**
+ * Adds suffixes for use in map_glossary_entries_to_translation_originals().
+ *
+ * @param array $glossary_entries An array of glossary entries to sort.
+ *
+ * @return array The suffixed entries.
+ */
+function gp_glossary_add_suffixes( $glossary_entries ) {
+	if ( empty( $glossary_entries ) ) {
+		return;
 	}
 
-	$glossary_entries = $glossary_entries_suffix_reverted;
+	// Get suffixes for glossary matching.
+	$suffixes = gp_glossary_suffixes();
+
+	$glossary_entries_suffixes = array();
 
 	// Create array of glossary terms, longest first.
 	foreach ( $glossary_entries as $value ) {
+
 		$term = strtolower( $value->term );
 		$type = $value->part_of_speech;
 
@@ -445,7 +428,6 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 		// Filter out suffixes with empty values.
 		$suffixes = array_filter( $suffixes, fn( $value ) => ! empty( $value ) );
 
-		// Add suffixes for part_of_speech with rules.
 		if ( ! empty( $suffixes[ $type ] ) ) {
 			// Loop through rules.
 			foreach ( $suffixes[ $type ] as $rule ) {
@@ -500,9 +482,6 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 					}
 				}
 			}
-		} else {
-			// Add match for part_of_speech without any suffix rules.
-			$glossary_entries_suffixes[ $term ] = array();
 		}
 	}
 
@@ -516,6 +495,68 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 	return $glossary_entries_suffixes;
 }
+
+
+/**
+ * Revert suffixed terms for use in map_glossary_entries_to_translation_originals().
+ *
+ * @param array $glossary_entries   An array of glossary entries.
+ *
+ * @return array The suffixed entries.
+ */
+function gp_glossary_remove_suffixes( $glossary_entries ) {
+	if ( empty( $glossary_entries ) ) {
+		return array();
+	}
+
+	// Get suffixes for glossary matching.
+	$suffixes = gp_glossary_suffixes();
+
+	foreach ( $glossary_entries as $key => $value ) {
+
+		$term = strtolower( $value->term );
+		$type = $value->part_of_speech;
+
+		// Check existent suffixes for part_of_speech with rules.
+		if ( ! empty( $suffixes[ $type ] ) ) {
+
+			// Loop through rules.
+			foreach ( $suffixes[ $type ] as $rule ) {
+
+				// Loop through rule endings.
+				foreach ( $rule['endings'] as $ending_pattern => $current_ending ) {
+
+					// Pattern of already suffixed terms.
+					$already_suffixed_pattern = '/' . $rule['preceded'] . sprintf( $current_ending, $ending_pattern ) . $rule['add'] . '\b/i';
+
+					// Check if suffix is already applied, to revert to base term.
+					if ( preg_match( $already_suffixed_pattern, $term/*, $match*/ ) ) {
+
+						$term_begining = preg_replace( '/' . $rule['add'] . '\b/', '', $term );
+
+						$term_pattern = preg_replace( '/' . sprintf( $current_ending, $ending_pattern ) . $rule['add'] . '\b/', $ending_pattern, $term );
+
+						if ( preg_match( '/' . $term_pattern . '/', $term_begining, $match ) ) {
+
+							// Add new base term.
+							$value = clone $value;
+
+							$value->term = $match[0];
+
+							// Add base term.
+							$glossary_entries[] = $value;
+
+							break 2;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return $glossary_entries;
+}
+
 
 /**
  * Add markup to a translation original to identify the glossary terms.
@@ -540,7 +581,13 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			return $translation;
 		}
 
+		// Find already suffixed entries and revert to the base form. Example: Troubleshooting -> Troubleshoot.
+		$glossary_entries = gp_glossary_remove_suffixes( $glossary_entries );
+
+		// Add suffixes for glossary matching.
 		$glossary_entries_suffixes = gp_glossary_add_suffixes( $glossary_entries );
+
+		var_dump( $glossary_entries_suffixes );
 
 		$glossary_entries_reference = array();
 		foreach ( $glossary_entries as $id => $value ) {
@@ -584,6 +631,16 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 					$glossary_entries_reference[ $term . $suffix ] = $referenced_term;
 				}
 			}
+		}
+
+		var_dump( $glossary_entries_reference );
+
+		if ( $translation->singular === 'Wife, leaf, wolf, bus, lens.' ) {
+			echo 'TEST2';
+			var_dump( $glossary_entries_reference );
+			//var_dump( $glossary_entries_reference[ $lower_chunk ] );
+
+			//var_dump( $lower_chunk );
 		}
 
 		// Build the regular expression.
