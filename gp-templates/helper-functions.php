@@ -230,7 +230,9 @@ function gp_glossary_suffixes() {
 					// Not ending with '-e'.
 					'[^e]'     => '%s', // Add 'ed'.       Fix and fix-ed, push and push-ed.
 					// Ending with '-e'.
-					'e'        => '',   // Change to 'ed'. Contribute and contribut-ed, delete and delet-ed.
+					'e'        => '', // Change to 'ed'. Contribute and contribut-ed, delete and delet-ed.
+					// Added to make it possible to revert.
+					'[^aeiou]' => '%1$s%1$s', // Add 'ed'. Visit and visit-ed, develop and develop-ed.
 				),
 				'add'      => 'ed', // Add 'ed'.
 			),
@@ -268,7 +270,9 @@ function gp_glossary_suffixes() {
 					'ye'       => '%s', // Add 'ing'.        Dye and dye-ing.
 					'oe'       => '%s', // Add 'ing'.        Tiptoe and tiptoe-ing.
 					// Ending with single '-e'.
-					'e'        => '',   // Change to 'ing'. Contribute and contribut-ing, delete and delet-ing, care and car-ing.
+					'e'        => '', // Change to 'ing'. Contribute and contribut-ing, delete and delet-ing, care and car-ing.
+					// Added to make it possible to revert.
+					'[^aeiou]' => '%1$s%1$s', // Double ending consonant and add 'ing'. Commit and committ-ing, prefer and preferr-ing, travelling and travell-ing.
 				),
 				'add'      => 'ing', // Add 'ing'.
 			),
@@ -526,6 +530,8 @@ function gp_glossary_add_reverted_suffixes( $glossary_entries ) {
 			// Loop through rules.
 			foreach ( $suffixes[ $type ] as $rule ) {
 
+				$matched = false;
+
 				// Loop through rule endings.
 				foreach ( $rule['endings'] as $ending_pattern => $current_ending ) {
 
@@ -535,23 +541,35 @@ function gp_glossary_add_reverted_suffixes( $glossary_entries ) {
 					// Check if suffix is already applied, to revert to base term.
 					if ( preg_match( $already_suffixed_pattern, $term/*, $match*/ ) ) {
 
-						$term_begining = preg_replace( '/' . $rule['add'] . '\b/', '', $term );
+						$matched = true;
+
+						$term_begining  = preg_replace( '/' . $rule['add'] . '\b/', '', $term );
+						$term_begining2 = preg_replace( '/' . sprintf( $current_ending, $ending_pattern ) . $rule['add'] . '\b/', '', $term );
+						$new_term = $term_begining2 . $ending_pattern;
+
+						$pattern = $ending_pattern !== sprintf( $current_ending, $ending_pattern ) ? $ending_pattern : $ending_pattern;
 
 						$term_pattern = preg_replace( '/' . sprintf( $current_ending, $ending_pattern ) . $rule['add'] . '\b/', $ending_pattern, $term );
 
+						$test  = preg_replace( '/' . $current_ending . $rule['add'] . '\b/', $ending_pattern, $term );
+						$test2 = preg_replace( '/' . sprintf( $current_ending, $ending_pattern ) . $rule['add'] . '\b/', $ending_pattern, $term );
+
+						// Add new base term.
+						$value = clone $value;
+
 						if ( preg_match( '/' . $term_pattern . '/', $term_begining, $match ) ) {
-
-							// Add new base term.
-							$value = clone $value;
-
-							$value->term = $match[0];
-
-							// Add base term.
-							$glossary_entries[] = $value;
-
-							break 2;
+							//$value->term = $match[0];
+						} else {
+							$value->term = $new_term;
 						}
+
+						// Add base term.
+						$glossary_entries[] = $value;
 					}
+				}
+
+				if ( $matched ) {
+					break;
 				}
 			}
 		}
