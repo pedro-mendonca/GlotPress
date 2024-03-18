@@ -9,8 +9,10 @@
 ?>
 <dl>
 	<dt><?php _e( 'Status:', 'glotpress' ); ?></dt>
-	<dd>
-		<?php echo display_status( $translation->translation_status ); ?>
+	<dd id="status-<?php echo esc_attr( $translation->row_id ); ?>">
+		<span class="status">
+			<?php echo display_status( $translation->translation_status ); ?>
+		</span>
 
 		<?php
 		// Don't show the buttons if the translation status is changesrequested but the changesrequested is not enabled,
