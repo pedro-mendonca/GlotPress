@@ -691,6 +691,10 @@ function gp_get_translation_row_classes( $translation ) {
 	$classes[] = 'priority-' . gp_array_get( GP::$original->get_static( 'priorities' ), $translation->priority );
 	$classes[] = $translation->warnings ? 'has-warnings' : 'no-warnings';
 	$classes[] = count( array_filter( $translation->translations, 'gp_is_not_null' ) ) > 0 ? 'has-translations' : 'no-translations';
+	if ( 'current' !== $translation->translation_status && $translation->has_current ) {
+		$classes[] = 'has-current';
+	}
+
 	/**
 	 * Filters the list of CSS classes for a translation row
 	 *

@@ -525,8 +525,18 @@ class GP_Translation extends GP_Thing {
 		$limit   = isset( $clauses['limit'] ) ? $clauses['limit'] : '';
 
 		$sql_for_translations = "
-			SELECT SQL_CALC_FOUND_ROWS $fields
-			FROM {$wpdb->gp_originals} as o
+			SELECT SQL_CALC_FOUND_ROWS $fields,
+				(CASE
+					WHEN EXISTS (
+						SELECT 1
+						FROM {$wpdb->gp_translations} AS t2
+						WHERE t2.original_id = o.id
+						AND t2.status = 'current'
+						AND t2.id != t.id
+					) THEN TRUE
+					ELSE FALSE
+				END) AS has_current
+			FROM {$wpdb->gp_originals} AS o
 			$join $join_on
 			WHERE $where $orderby $limit";
 
@@ -594,6 +604,8 @@ class GP_Translation extends GP_Thing {
 					'gp-priority: ' . GP_Original::$priorities[ $row->priority ],
 				);
 			}
+
+			$row->has_current = (bool) $row->has_current;
 
 			$translations[] = new Translation_Entry( (array) $row );
 		}
