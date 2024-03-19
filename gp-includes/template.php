@@ -694,6 +694,12 @@ function gp_get_translation_row_classes( $translation ) {
 	if ( 'current' !== $translation->translation_status && $translation->has_current ) {
 		$classes[] = 'has-current';
 	}
+	if ( 'waiting' !== $translation->translation_status && $translation->has_waiting ) {
+		$classes[] = 'has-waiting';
+	}
+	if ( 'fuzzy' !== $translation->translation_status && $translation->has_fuzzy ) {
+		$classes[] = 'has-fuzzy';
+	}
 
 	/**
 	 * Filters the list of CSS classes for a translation row
