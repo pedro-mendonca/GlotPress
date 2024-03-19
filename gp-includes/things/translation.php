@@ -535,7 +535,25 @@ class GP_Translation extends GP_Thing {
 						AND t2.id != t.id
 					) THEN TRUE
 					ELSE FALSE
-				END) AS has_current
+				END) AS has_current,
+				(CASE
+					WHEN EXISTS (
+						SELECT 1
+						FROM {$wpdb->gp_translations} AS t3
+						WHERE t3.original_id = o.id
+						AND t3.status = 'waiting'
+					) THEN TRUE
+					ELSE FALSE
+				END) AS has_waiting,
+				(CASE
+					WHEN EXISTS (
+						SELECT 1
+						FROM {$wpdb->gp_translations} AS t4
+						WHERE t4.original_id = o.id
+						AND t4.status = 'fuzzy'
+					) THEN TRUE
+					ELSE FALSE
+				END) AS has_fuzzy
 			FROM {$wpdb->gp_originals} AS o
 			$join $join_on
 			WHERE $where $orderby $limit";
@@ -606,6 +624,8 @@ class GP_Translation extends GP_Thing {
 			}
 
 			$row->has_current = (bool) $row->has_current;
+			$row->has_waiting = (bool) $row->has_waiting;
+			$row->has_fuzzy   = (bool) $row->has_fuzzy;
 
 			$translations[] = new Translation_Entry( (array) $row );
 		}
