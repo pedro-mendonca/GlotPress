@@ -1041,6 +1041,10 @@ span.context {
 	margin-bottom: 1rem;
 }
 
+.editor .meta .status-actions button strong {
+	margin-right: 0.25rem;
+}
+
 /*
  * JavaScript, errors and notices.
  */
