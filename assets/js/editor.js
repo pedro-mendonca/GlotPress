@@ -365,6 +365,8 @@ $gp.editor = (
 							$gp.editor.replace_current( response[ original_id ] );
 						}
 
+						// TODO: On suggesting new translation, don't replace others if looking at all.
+
 						new_status = $gp.editor.current.translation_status;
 						new_warnings = $gp.editor.current.translation_warnings;
 
@@ -427,7 +429,7 @@ $gp.editor = (
 				} );
 			},
 			set_status: function( button, status ) {
-				var editor, data, status_name, old_status,
+				var editor, data, status_name, old_status, has_current, has_waiting, has_fuzzy, original_id, translation_id,
 					translationChanged = false;
 
 				if ( ! $gp.editor.current || ! $gp.editor.current.translation_id ) {
@@ -481,12 +483,157 @@ $gp.editor = (
 						button.prop( 'disabled', false );
 						$gp.notices.success( wp.i18n.__( 'Status set!', 'glotpress' ) );
 						old_status = $gp.editor.current.translation_status;
-						$gp.editor.replace_current( response );
-						$gp.editor.next();
-						if ( old_status !== status ) {
+						original_id = $gp.editor.current.original_id;
+						translation_id = $gp.editor.current.translation_id;
+						has_current = $gp.editor.current.translation_has_current;
+						has_waiting = $gp.editor.current.translation_has_waiting;
+						has_fuzzy = $gp.editor.current.translation_has_fuzzy;
+
+						// Check if old status was current.
+
+						if ( old_status === 'translated' ) {
+							// Remove any has-current for the same original_id, because there can only be one current.
+							$( 'tr.has-current[row^="' + original_id + '-"]' ).removeClass( 'has-current' );
 							$gp.editor.update_filter_count( old_status, 'remove' );
+						} else if ( old_status === 'waiting' ) { // Check if old status was waiting.
+							// Remove any has-waiting for the same original_id, because there can only be one waiting.
+							$( 'tr.has-waiting[row^="' + original_id + '-"]' ).removeClass( 'has-waiting' );
+							$gp.editor.update_filter_count( old_status, 'remove' );
+						} else {
+							//$gp.editor.update_filter_count( old_status, 'remove' );
+						}
+
+						// $gp.editor.update_filter_count( old_status, 'remove' ); NÃO PODE SER PORQUE DEPENDE DE CONDIÇÕES.
+
+						// TODO: Untranslated: no waiting, current or fuzzy.
+
+						// Check if new status is current.
+						if ( status === 'current' ) {
+							// If the old translation has another current for the same original, set the previous current to old.
+							$( 'tr[row^="' + original_id + '-"].status-current' ).each( function() {
+								$( this ).removeClass( 'status-current' ).addClass( 'status-old' );
+								$( this ).find( 'div.meta dd[id^="status-"] span.status' ).text( wp.i18n.__( 'old', 'glotpress' ) );
+								$( this ).find( 'div.meta dd[id^="status-"] button.approve' ).prop( 'disabled', false );
+							} );
+
+							// All other must have 'has-current'.
+							$( 'tr[row^="' + original_id + '-"]' ).each( function() {
+								// Add has-current.
+								$( this ).addClass( 'has-current' );
+							} );
+
+							// Check all waiting translations for the same original_id.
+							$( 'tr.preview.status-waiting[row^="' + original_id + '-"]' ).each( function() {
+								// Decrease waiting count.
+								$gp.editor.update_filter_count( 'waiting', 'remove' );
+							} );
+							$( 'tr.status-waiting[row^="' + original_id + '-"]' ).each( function() {
+								// Change from waiting to old.
+								$( this ).removeClass( 'status-waiting' ).addClass( 'status-old' );
+							} );
+
+							// Check all fuzzy translations for the same original_id.
+							$( 'tr.preview.status-fuzzy[row^="' + original_id + '-"]' ).each( function() {
+								// Decrease fuzzy count.
+								$gp.editor.update_filter_count( 'fuzzy', 'remove' );
+							} );
+							$( 'tr.status-fuzzy[row^="' + original_id + '-"]' ).each( function() {
+								// Change from fuzzy to old.
+								$( this ).removeClass( 'status-fuzzy' ).addClass( 'status-old' );
+							} );
+
+							if ( ! has_current ) {
+								$gp.editor.update_filter_count( status, 'add' );
+							}
+						}
+
+
+						// Check if new status is waiting.
+						/*if ( status === 'waiting' ) {
+							// If the old translation has another waiting for the same original, set the previous current to old.
+							$( 'tr[row^="' + original_id + '-"].status-waiting' ).each( function() {
+								$( this ).removeClass( 'status-waiting' ).addClass( 'status-old' );
+								$( this ).find( 'div.meta dd[id^="status-"] span.status' ).text( wp.i18n.__( 'old', 'glotpress' ) );
+								// $( this ).find( 'div.meta dd[id^="status-"] button.approve' ).prop( 'disabled', false );
+							} );
+
+
+							// All other must have 'has-waiting'.
+							$( 'tr[row^="' + original_id + '-"]' ).each( function() {
+								// Add has-waiting.
+								$( this ).addClass( 'has-waiting' );
+							} );
+
+
+							// Check all waiting translations for the same original_id.
+							$( 'tr.preview.status-waiting[row^="' + original_id + '-"]' ).each( function() {
+								// Decrease waiting count.
+								$gp.editor.update_filter_count( 'waiting', 'remove' );
+							} );
+							$( 'tr.status-waiting[row^="' + original_id + '-"]' ).each( function() {
+								// Change from waiting to old.
+								$( this ).removeClass( 'status-waiting' ).addClass( 'status-old' );
+							} );
+							*/
+
+							// Check all fuzzy translations for the same original_id.
+							/*$( 'tr.preview.status-fuzzy[row^="' + original_id + '-"]' ).each( function() {
+								// Decrease fuzzy count.
+								$gp.editor.update_filter_count( 'fuzzy', 'remove' );
+							} );
+							$( 'tr.status-fuzzy[row^="' + original_id + '-"]' ).each( function() {
+								// Change from fuzzy to old.
+								$( this ).removeClass( 'status-fuzzy' ).addClass( 'status-old' );
+							} );
+
+
+
+							if ( ! has_waiting ) {
+								$gp.editor.update_filter_count( status, 'add' );
+							}
+						}
+						*/
+
+						// Check if new status is current.
+						if ( status === 'fuzzy' ) {
 							$gp.editor.update_filter_count( status, 'add' );
 						}
+
+						$gp.editor.replace_current( response );
+
+						$gp.editor.next();
+
+						// If the old translation has another current for the same original, set the previous current to old.
+						/*
+						if ( has_current ) {
+							$( 'tr[row^="' + original_id + '-"].status-current' ).each( function() {
+								$( this ).removeClass( 'status-current' ).addClass( 'status-old has-current' );
+								$( this ).find( 'div.meta dd[id^="status-"] span.status' ).text( wp.i18n.__( 'old', 'glotpress' ) );
+								$( this ).find( 'div.meta dd[id^="status-"] button.approve' ).prop( 'disabled', false );
+							} );
+						}
+						*/
+
+
+
+
+
+						// If the old status is different from current status, update old row.
+						/*if ( old_status !== status ) {
+							// If the old translation don't have any other current for same original, update counts.
+							if ( ! has_current ) {
+								$gp.editor.update_filter_count( old_status, 'remove' );
+								$gp.editor.update_filter_count( status, 'add' );
+							} else { // If the old translation has another current for the same original, set the previous current to old.
+								$( 'tr[row^="' + original_id + '-"]:not([row$="' + translation_id + '"]).status-current' ).each( function() {
+									$( this ).removeClass( 'status-current' ).addClass( 'status-old has-current' );
+									$( this ).find( 'div.meta dd[id^="status-"] span.status' ).text( wp.i18n.__( 'old', 'glotpress' ) );
+									$( this ).find( 'div.meta dd[id^="status-"] button.approve' ).prop( 'disabled', false );
+								} );
+							}
+						} else {
+							alert( 'Same status!' );
+						}*/
 					},
 					error: function( xhr, msg ) {
 						button.prop( 'disabled', false );
