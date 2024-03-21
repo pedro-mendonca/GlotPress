@@ -30,13 +30,13 @@
 					if ( ( 'rejected' !== $translation->translation_status ) && ( 'changesrequested' !== $translation->translation_status ) ) {
 						?>
 						<button class="button is-small reject" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-rejected_' . $translation->id ) ); ?>" title="<?php esc_attr_e( 'Reject this translation. The existing translation will be kept as part of the translation history.', 'glotpress' ); ?>">
-							<strong>&minus;</strong> <?php _ex( 'Reject', 'Action', 'glotpress' ); ?>
+							<strong>&minus;</strong> <span><?php _ex( 'Reject', 'Action', 'glotpress' ); ?></span>
 						</button>
 						<?php
 						if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) { // TODO: delete when we merge the gp-translation-helpers in GlotPress.
 							?>
 							<button class="button is-small changesrequested" style="display: none;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-changesrequested_' . $translation->id ) ); ?>" title="<?php esc_attr_e( 'Request changes for this translation. The existing translation will be kept as part of the translation history.', 'glotpress' ); ?>">
-								<strong>&minus;</strong> <?php _ex( 'Request changes', 'Action', 'glotpress' ); ?>
+								<strong>&minus;</strong> <span><?php _ex( 'Request changes', 'Action', 'glotpress' ); ?></span>
 							</button>
 							<?php
 						}
