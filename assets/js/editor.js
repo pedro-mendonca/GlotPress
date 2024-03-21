@@ -38,6 +38,9 @@ $gp.editor = (
 				var classes = editor.attr( 'class' ).split( ' ' );
 				var status = false;
 				var hasWarnings = false;
+				var hasCurrent = false;
+				var hasWaiting = false;
+				var hasFuzzy = false;
 				$.each( classes, function( index, value ) {
 					if ( statuses.hasOwnProperty( value ) ) {
 						status = statuses[ value ];
@@ -45,10 +48,22 @@ $gp.editor = (
 					if ( value === 'has-warnings' ) {
 						hasWarnings = true;
 					}
+					if ( value === 'has-current' ) {
+						hasCurrent = true;
+					}
+					if ( value === 'has-waiting' ) {
+						hasWaiting = true;
+					}
+					if ( value === 'has-fuzzy' ) {
+						hasFuzzy = true;
+					}
 				} );
 				return {
 					status: status,
 					hasWarnings: hasWarnings,
+					hasCurrent: hasCurrent,
+					hasWaiting: hasWaiting,
+					hasFuzzy: hasFuzzy,
 				};
 			},
 			update_word_count: function( element ) {
@@ -138,6 +153,9 @@ $gp.editor = (
 				editor.original_id = $gp.editor.original_id_from_row_id( row_id );
 				editor.translation_id = $gp.editor.translation_id_from_row_id( row_id );
 				editor.translation_status = $gp.editor.translation_status_from_row( editor ).status;
+				editor.translation_has_current = $gp.editor.translation_status_from_row( editor ).hasCurrent;
+				editor.translation_has_waiting = $gp.editor.translation_status_from_row( editor ).hasWaiting;
+				editor.translation_has_fuzzy = $gp.editor.translation_status_from_row( editor ).hasFuzzy;
 				editor.translation_warnings = $gp.editor.translation_status_from_row( editor ).hasWarnings;
 
 				editor.original_translations = $( 'textarea[name="translation[' + editor.original_id + '][]"]', editor ).map( function() {
