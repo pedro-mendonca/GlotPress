@@ -17,7 +17,7 @@
 				if ( $can_approve_translation ) {
 					if ( 'current' !== $translation->translation_status ) {
 						?>
-						<button class="button is-small approve" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-current_' . $translation->id ) ); ?>" title="<?php esc_attr_e( 'Approve this translation. Any existing translation will be kept as part of the translation history.', 'glotpress' ); ?>">
+						<button class="button is-small is-primary approve" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-current_' . $translation->id ) ); ?>" title="<?php esc_attr_e( 'Approve this translation. Any existing translation will be kept as part of the translation history.', 'glotpress' ); ?>">
 							<strong>+</strong> <?php _ex( 'Approve', 'Action', 'glotpress' ); ?>
 						</button>
 						<?php
