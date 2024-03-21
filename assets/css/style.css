@@ -1037,6 +1037,10 @@ span.context {
 	font-weight: bold;
 }
 
+.editor .meta .status-actions {
+	margin-bottom: 1rem;
+}
+
 /*
  * JavaScript, errors and notices.
  */
