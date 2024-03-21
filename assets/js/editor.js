@@ -644,10 +644,12 @@ $gp.editor = (
 				} );
 			},
 			discard_warning: function( link ) {
-				var data, old_warnings, new_warnings;
+				var data, old_warnings, new_warnings, translation_status;
 				if ( ! $gp.editor.current ) {
 					return;
 				}
+
+				translation_status = $gp.editor.current.translation_status;
 
 				$gp.notices.notice( wp.i18n.__( 'Discarding&hellip;', 'glotpress' ) );
 
@@ -671,7 +673,10 @@ $gp.editor = (
 						// Check if removed all warnings.
 						if ( old_warnings !== new_warnings ) {
 							$gp.editor.update_filter_count( 'warnings', 'remove' );
-							$gp.editor.next();
+							// If translation is current, move to next.
+							if ( translation_status === 'current' ) {
+								$gp.editor.next();
+							}
 						}
 					},
 					error: function( xhr, msg ) {
