@@ -14,41 +14,63 @@
 		// because in this situation we consider the changesrequested as rejected translations.
 		if ( 'changesrequested' !== $translation->translation_status || apply_filters( 'gp_enable_changesrequested_status', false ) ) { // TODO: delete when we merge the gp-translation-helpers in GlotPress.
 			if ( $translation->translation_status ) {
+
+				// Prepare buttons to display.
+				$button_approve          = false;
+				$button_reject           = false;
+				$button_fuzzy            = false;
+				$button_changesrequested = false;
+
 				if ( $can_approve_translation ) {
 					if ( 'current' !== $translation->translation_status ) {
-						?>
-						<button class="button is-small is-primary approve" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-current_' . $translation->id ) ); ?>" title="<?php esc_attr_e( 'Approve this translation. Any existing translation will be kept as part of the translation history.', 'glotpress' ); ?>">
-							<strong>+</strong> <?php _ex( 'Approve', 'Action', 'glotpress' ); ?>
-						</button>
-						<?php
+						$button_approve = true;
 					}
-					if ( ( 'rejected' !== $translation->translation_status ) && ( 'changesrequested' !== $translation->translation_status ) ) {
-						?>
-						<button class="button is-small reject" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-rejected_' . $translation->id ) ); ?>" title="<?php esc_attr_e( 'Reject this translation. The existing translation will be kept as part of the translation history.', 'glotpress' ); ?>">
-							<strong>&minus;</strong> <?php _ex( 'Reject', 'Action', 'glotpress' ); ?>
-						</button>
-						<?php
-						if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) { // TODO: delete when we merge the gp-translation-helpers in GlotPress.
-							?>
-							<button class="button is-small changesrequested" style="display: none;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-changesrequested_' . $translation->id ) ); ?>" title="<?php esc_attr_e( 'Request changes for this translation. The existing translation will be kept as part of the translation history.', 'glotpress' ); ?>">
-								<strong>&minus;</strong> <?php _ex( 'Request changes', 'Action', 'glotpress' ); ?>
-							</button>
-							<?php
-						}
-					}
-					if ( 'fuzzy' !== $translation->translation_status ) {
-						?>
-						<button class="button is-small fuzzy" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-fuzzy_' . $translation->id ) ); ?>" title="<?php esc_attr_e( 'Mark this translation as fuzzy for further review.', 'glotpress' ); ?>">
-							<strong>~</strong> <?php _ex( 'Fuzzy', 'Action', 'glotpress' ); ?>
-						</button>
-						<?php
-					}
-				} elseif ( $can_reject_self ) {
+
 					?>
-					<button class="button is-small reject" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-rejected_' . $translation->id ) ); ?>" title="<?php esc_attr_e( 'Reject this translation. The existing translation will be kept as part of the translation history.', 'glotpress' ); ?>">
+					<button class="button is-small is-primary approve" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-current_' . $translation->id ) ); ?>" title="<?php esc_attr_e( 'Approve this translation. Any existing translation will be kept as part of the translation history.', 'glotpress' ); ?>" <?php echo esc_attr( $button_approve ? '' : 'disabled' ); ?>>
+						<strong>+</strong> <?php _ex( 'Approve', 'Action', 'glotpress' ); ?>
+					</button>
+					<?php
+
+					if ( ( 'rejected' !== $translation->translation_status ) && ( 'changesrequested' !== $translation->translation_status ) ) {
+						$button_reject           = true;
+						$button_changesrequested = true;
+					}
+
+					?>
+					<button class="button is-small reject" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-rejected_' . $translation->id ) ); ?>" title="<?php esc_attr_e( 'Reject this translation. The existing translation will be kept as part of the translation history.', 'glotpress' ); ?>" <?php echo esc_attr( $button_reject ? '' : 'disabled' ); ?>>
 						<strong>&minus;</strong> <?php _ex( 'Reject', 'Action', 'glotpress' ); ?>
 					</button>
-					<button class="button is-small fuzzy" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-fuzzy_' . $translation->id ) ); ?>" title="<?php esc_attr_e( 'Mark this translation as fuzzy for further review.', 'glotpress' ); ?>">
+					<?php
+
+					if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) { // TODO: delete when we merge the gp-translation-helpers in GlotPress.
+						?>
+						<button class="button is-small changesrequested" style="display: none;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-changesrequested_' . $translation->id ) ); ?>" title="<?php esc_attr_e( 'Request changes for this translation. The existing translation will be kept as part of the translation history.', 'glotpress' ); ?>" <?php echo esc_attr( $button_changesrequested ? '' : 'disabled' ); ?>>
+							<strong>&minus;</strong> <?php _ex( 'Request changes', 'Action', 'glotpress' ); ?>
+						</button>
+						<?php
+					}
+
+					if ( 'fuzzy' !== $translation->translation_status ) {
+						$button_fuzzy = true;
+					}
+					?>
+					<button class="button is-small fuzzy" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-fuzzy_' . $translation->id ) ); ?>" title="<?php esc_attr_e( 'Mark this translation as fuzzy for further review.', 'glotpress' ); ?>" <?php echo esc_attr( $button_fuzzy ? '' : 'disabled' ); ?>>
+						<strong>~</strong> <?php _ex( 'Fuzzy', 'Action', 'glotpress' ); ?>
+					</button>
+					<?php
+				} elseif ( $can_reject_self ) {
+					if ( 'rejected' !== $translation->translation_status ) {
+						$button_reject = true;
+					}
+					if ( 'fuzzy' !== $translation->translation_status ) {
+						$button_fuzzy = true;
+					}
+					?>
+					<button class="button is-small reject" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-rejected_' . $translation->id ) ); ?>" title="<?php esc_attr_e( 'Reject this translation. The existing translation will be kept as part of the translation history.', 'glotpress' ); ?>" <?php echo esc_attr( $button_reject ? '' : 'disabled' ); ?>>
+						<strong>&minus;</strong> <?php _ex( 'Reject', 'Action', 'glotpress' ); ?>
+					</button>
+					<button class="button is-small fuzzy" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-fuzzy_' . $translation->id ) ); ?>" title="<?php esc_attr_e( 'Mark this translation as fuzzy for further review.', 'glotpress' ); ?>" <?php echo esc_attr( $button_fuzzy ? '' : 'disabled' ); ?>>
 						<strong>~</strong> <?php _ex( 'Fuzzy', 'Action', 'glotpress' ); ?>
 					</button>
 					<?php
