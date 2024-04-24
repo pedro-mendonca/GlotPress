@@ -820,7 +820,7 @@ function display_status( $status ) {
 	return $status ? $status : _x( 'untranslated', 'Single Status', 'glotpress' );
 }
 
-function references( $project, $entry ) {
+function references( $project, $entry, $scope = 'reference' , $filters = array() ) {
 
 	/**
 	 * Filter whether to show references of a translation string on a translation row.
@@ -848,12 +848,12 @@ function references( $project, $entry ) {
 				?>
 				<li>
 					<a target="_blank" tabindex="-1" href="<?php echo esc_url( $source_url ); ?>">
-						<?php echo esc_html( $file . ':' . $line ); ?>
+						<?php echo highlight_search_terms( esc_html( $file . ':' . $line ), $scope, $filters ); ?>
 					</a>
 				</li>
 				<?php
 			else :
-				echo '<li>' . esc_html( "$file:$line" ) . '</li>';
+				echo '<li>' . highlight_search_terms( esc_html( "$file:$line" ), $scope, $filters ) . '</li>';
 			endif;
 		endforeach;
 		?>

@@ -114,7 +114,7 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 			<dd><?php gp_link_user( $translation->user_last_modified ); ?></dd>
 		</dl>
 	<?php endif; ?>
-	<?php references( $project, $translation ); ?>
+	<?php references( $project, $translation, 'reference', $filters ); ?>
 
 	<dl>
 		<dt><?php _e( 'Priority:', 'glotpress' ); ?></dt>
