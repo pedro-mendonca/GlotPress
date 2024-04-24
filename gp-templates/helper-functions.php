@@ -70,6 +70,20 @@ function prepare_original( $text ) {
  */
 function highlight_search_terms( $text, $scope = null, $filters = array() ) {
 
+	/**
+	 * Filter to enable or disable the filters search terms highlighting in the translations page.
+	 *
+	 * @since 4.0.x
+	 *
+	 * @param bool   Wether to highlight the search terms. Defaults to true.
+	 */
+	$highlight_search_terms = apply_filters( 'gp_search_filter_term_highlight', true );
+
+	if ( ! $highlight_search_terms ) {
+		// Don't highlight the search terms.
+		return $text;
+	}
+
 	// The search scopes.
 	$filter_scopes = array(
 		'scope_originals'    => array( // Originals only.
