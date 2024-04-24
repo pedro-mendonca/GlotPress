@@ -19,12 +19,12 @@ $colspan = apply_filters( 'gp_translation_row_editor_colspan', $can_approve ? 5 
 $singular = sprintf(
 	'<small>%s</small><br><span class="original">%s</span>',
 	__( 'Singular:', 'glotpress' ),
-	prepare_original( $translation_singular )
+	highlight_search_terms( prepare_original( $translation_singular ), 'original', $filters )
 );
 $plural   = sprintf(
 	'<small>%s</small><br><span class="original">%s</span>',
 	__( 'Plural:', 'glotpress' ),
-	isset( $translation->plural_glossary_markup ) ? prepare_original( $translation->plural_glossary_markup ) : prepare_original( esc_translation( $translation->plural ) )
+	isset( $translation->plural_glossary_markup ) ? highlight_search_terms( prepare_original( $translation->plural_glossary_markup ), 'original', $filters ) : highlight_search_terms( prepare_original( esc_translation( $translation->plural ) ) )
 );
 
 ?>
@@ -32,9 +32,9 @@ $plural   = sprintf(
 	<td colspan="<?php echo esc_attr( $colspan ); ?>">
 		<div class="strings">
 			<?php if ( ! $translation->plural ) : ?>
-				<p class="original"><?php echo prepare_original( $translation_singular ); ?></p>
+				<p class="original"><?php echo highlight_search_terms( prepare_original( $translation_singular ), 'original', $filters ); ?></p>
 				<p aria-hidden="true" class="original_raw"><?php echo esc_translation( $translation->singular ); ?></p>
-				<?php textareas( $translation, array( $can_edit, $can_approve_translation ) ); ?>
+				<?php textareas( $translation, array( $can_edit, $can_approve_translation ), 0, 'translation', $filters ); ?>
 			<?php else : ?>
 				<?php if ( absint( $locale->nplurals ) === 2 && 'n != 1' === $locale->plural_expression ) : ?>
 					<p>
@@ -42,17 +42,17 @@ $plural   = sprintf(
 						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						echo $singular;
 						?>
-						<span aria-hidden="true" class="original_raw"><?php echo esc_translation( $translation->singular ); ?></span>
+						<span aria-hidden="true" class="original_raw"><?php echo esc_translation( highlight_search_terms( $translation->singular, 'translation', $filters ) ); ?></span>
 					</p>
-					<?php textareas( $translation, array( $can_edit, $can_approve ), 0 ); ?>
+					<?php textareas( $translation, array( $can_edit, $can_approve ), 0, 'translation', $filters ); ?>
 					<p class="clear">
 						<?php
 						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						echo $plural;
 						?>
-						<span aria-hidden="true" class="original_raw"><?php echo esc_translation( $translation->plural ); ?></span>
+						<span aria-hidden="true" class="original_raw"><?php echo esc_translation( highlight_search_terms( $translation->plural, 'translation', $filters ) ); ?></span>
 					</p>
-					<?php textareas( $translation, array( $can_edit, $can_approve ), 1 ); ?>
+					<?php textareas( $translation, array( $can_edit, $can_approve ), 1, 'translation', $filters ); ?>
 				<?php else : ?>
 					<!--
 					TODO: labels for each plural textarea and a sample number
@@ -62,14 +62,14 @@ $plural   = sprintf(
 						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						echo $singular;
 						?>
-						<span aria-hidden="true" class="original_raw"><?php echo esc_translation( $translation->singular ); ?></span>
+						<span aria-hidden="true" class="original_raw"><?php echo esc_translation( highlight_search_terms( $translation->singular, 'translation', $filters ) ); ?></span>
 					</p>
 					<p class="clear">
 						<?php
 						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						echo $plural;
 						?>
-						<span aria-hidden="true" class="original_raw"><?php echo esc_translation( $translation->plural ); ?></span>
+						<span aria-hidden="true" class="original_raw"><?php echo esc_translation( highlight_search_terms( $translation->plural, 'translation', $filters ) ); ?></span>
 					</p>
 					<?php foreach ( range( 0, $locale->nplurals - 1 ) as $plural_index ) : ?>
 						<?php if ( $locale->nplurals > 1 ) : ?>

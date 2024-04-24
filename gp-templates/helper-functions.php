@@ -746,7 +746,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 	return $translation;
 }
 
-function textareas( $entry, $permissions, $index = 0 ) {
+function textareas( $entry, $permissions, $index = 0, $scope = null, $filters = array() ) {
 	list( $can_edit, $can_approve ) = $permissions;
 	?>
 	<div class="textareas">
@@ -773,7 +773,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			$entry->translations = array();
 		}
 		?>
-		<blockquote class="translation"><?php echo prepare_original( esc_translation( gp_array_get( $entry->translations, $index ) ) ); ?></blockquote>
+		<blockquote class="translation"><?php echo prepare_original( highlight_search_terms( esc_translation( gp_array_get( $entry->translations, $index ) ), $scope, $filters ) ); ?></blockquote>
 		<textarea class="foreign-text" name="translation[<?php echo esc_attr( $entry->original_id ); ?>][]" id="translation_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $entry->id ); ?>_<?php echo esc_attr( $index ); ?>" <?php echo disabled( ! $can_edit ); ?>><?php echo gp_prepare_translation_textarea( esc_translation( gp_array_get( $entry->translations, $index ) ) ); ?></textarea>
 
 		<div>

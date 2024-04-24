@@ -31,11 +31,12 @@ $priority_char = array(
 	<td class="original">
 		<?php
 		if ( ! $translation->plural ) {
+			$translation_singular = highlight_search_terms( $translation_singular, 'original', $filters );
 			?>
 			<span class="original-text"><?php echo prepare_original( $translation_singular ); ?></span>
 			<?php
 		} else {
-			$translation_plural = isset( $translation->plural_glossary_markup ) ? $translation->plural_glossary_markup : prepare_original( esc_translation( $translation->plural ) );
+			$translation_plural = highlight_search_terms( isset( $translation->plural_glossary_markup ) ? $translation->plural_glossary_markup : prepare_original( esc_translation( $translation->plural ) ) );
 			?>
 			<ul>
 				<li><small><?php esc_html_e( 'Singular:', 'glotpress' ); ?></small><br><span class="original-text"><?php echo prepare_original( $translation_singular ); ?></span></li>
@@ -65,7 +66,7 @@ $priority_char = array(
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $missing_text;
 		} elseif ( ! $translation->plural || 1 === $locale->nplurals ) {
-			echo '<span class="translation-text">' . prepare_original( esc_translation( $translation->translations[0] ) ) . '</span>';
+			echo '<span class="translation-text">' . highlight_search_terms( prepare_original( esc_translation( $translation->translations[0] ) ), 'translation', $filters ) . '</span>';
 		} elseif ( $translation->plural && 2 === $locale->nplurals && 'n != 1' === $locale->plural_expression ) {
 			?>
 			<ul>
@@ -76,7 +77,7 @@ $priority_char = array(
 						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						echo $missing_text;
 					} else {
-						echo '<span class="translation-text">' . prepare_original( esc_translation( $translation->translations[0] ) ) . '</span>';
+						echo '<span class="translation-text">' . highlight_search_terms( prepare_original( esc_translation( $translation->translations[0] ) ), 'translation', $filters ) . '</span>';
 					}
 					?>
 				</li>
@@ -87,7 +88,7 @@ $priority_char = array(
 						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						echo $missing_text;
 					} else {
-						echo '<span class="translation-text">' . prepare_original( esc_translation( $translation->translations[1] ) ) . '</span>';
+						echo '<span class="translation-text">' . highlight_search_terms( prepare_original( esc_translation( $translation->translations[1] ) ), 'translation', $filters ) . '</span>';
 					}
 					?>
 				</li>
@@ -115,7 +116,7 @@ $priority_char = array(
 							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 							echo $missing_text;
 						} else {
-							echo '<span class="translation-text">' . prepare_original( esc_translation( $translation->translations[ $plural_index ] ) ) . '</span>';
+							echo '<span class="translation-text">' . highlight_search_terms( prepare_original( esc_translation( $translation->translations[ $plural_index ] ) ), 'translation', $filters ) . '</span>';
 						}
 						?>
 					</li>
