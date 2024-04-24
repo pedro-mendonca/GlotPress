@@ -62,7 +62,7 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 	<?php if ( $translation->context ) : ?>
 		<dl>
 			<dt><?php _e( 'Context:', 'glotpress' ); ?></dt>
-			<dd><?php echo esc_translation( $translation->context ); ?></dd>
+			<dd><?php echo highlight_search_terms( esc_translation( $translation->context ), 'context', $filters ); ?></dd>
 		</dl>
 	<?php endif; ?>
 	<?php if ( $translation->extracted_comments ) : ?>

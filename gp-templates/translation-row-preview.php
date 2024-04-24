@@ -46,7 +46,7 @@ $priority_char = array(
 		?>
 		<?php if ( $translation->context ) : ?>
 			<?php /* translators: %s: Context of original */ ?>
-			<span class="context bubble" title="<?php echo esc_attr( sprintf( __( 'Context: %s', 'glotpress' ), $translation->context ) ); ?>"><?php echo esc_html( $translation->context ); ?></span>
+			<span class="context bubble" title="<?php echo esc_attr( sprintf( __( 'Context: %s', 'glotpress' ), $translation->context ) ); ?>"><?php echo highlight_search_terms( esc_html( $translation->context ), 'context', $filters ); ?></span>
 		<?php endif; ?>
 	</td>
 	<td class="translation foreign-text">
