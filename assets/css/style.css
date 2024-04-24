@@ -1305,6 +1305,10 @@ form.filters-toolbar a.revealing.open {
 	font-family: monospace;
 }
 
+.search-term {
+	background-color: var(--gp-color-primary-100);
+}
+
 .ternary {
 	font-size: 0.8em;
 }

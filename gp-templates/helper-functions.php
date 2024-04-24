@@ -58,6 +58,67 @@ function prepare_original( $text ) {
 	return $text;
 }
 
+
+/**
+ * Highlight search terms.
+ *
+ * @param string $text      Text string.
+ * @param string $scope     Scope of the text.
+ * @param array  $filters   Array of search filters.
+ *
+ * @return string   Text string with the search terms highlighted.
+ */
+function highlight_search_terms( $text, $scope = null, $filters = array() ) {
+
+	// The search scopes.
+	$filter_scopes = array(
+		'scope_originals'    => array( // Originals only.
+			'original',
+		),
+		'scope_translations' => array( // Translations only.
+			'translation',
+		),
+		'scope_context'      => array( // Context only.
+			'context',
+		),
+		'scope_references'   => array( // References only.
+			'reference',
+		),
+		'scope_both'         => array( // Originals and Translations.
+			'original',
+			'translation',
+		),
+		'scope_any'          => array( // Any.
+			'original',
+			'translation',
+			'context',
+			'reference',
+		),
+	);
+
+	if ( ! empty( $filters ) && isset( $filters['term'] ) ) {
+
+		// The search term.
+		// TODO: Check for compatibility with regex search.
+		$search_term = $filters['term'];
+
+		// Set case sensitive search.
+		$search_case_sensitive = isset( $filters['case_sensitive'] ) && 'yes' === $filters['case_sensitive'] ? '' : 'i';
+
+		// Get search scope. Defaults to Any.
+		$search_scope = isset( $filters['term_scope'] ) && array_key_exists( $filters['term_scope'], $filter_scopes ) ? $filters['term_scope'] : null;
+
+		// Check if current scope matches the filters search scope.
+		if ( in_array( $scope, $filter_scopes[ $search_scope ], true ) ) {
+			// Highlight search term.
+			$text = preg_replace( '/(' . $search_term . ')/' . $search_case_sensitive, '<span class="search-term">$1</span>', $text );
+		}
+	}
+
+	return wp_kses_post( $text );
+}
+
+
 /**
  * Prepares a translation string to be printed out in a translation row by adding an 'extra' return/newline if
  * it starts with one.
