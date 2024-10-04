@@ -185,6 +185,11 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
+		// Check for any ambiguity of multiple projects with the same path.
+		if ( is_wp_error( $project ) ) {
+			$this->redirect_with_error( $project->get_error_message() );
+		}
+
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
 			return;
 		}
@@ -197,6 +202,11 @@ class GP_Route_Project extends GP_Route_Main {
 
 		if ( ! $project ) {
 			$this->die_with_404();
+		}
+
+		// Check for any ambiguity of multiple projects with the same path.
+		if ( is_wp_error( $project ) ) {
+			$this->redirect_with_error( $project->get_error_message() );
 		}
 
 		if ( $this->invalid_nonce_and_redirect( 'edit-project_' . $project->id ) ) {
