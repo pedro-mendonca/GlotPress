@@ -251,8 +251,14 @@ class GP_Project extends GP_Thing {
 		}
 		// Update children's paths, too.
 		if ( $old_path ) {
-			$query = "UPDATE $this->table SET path = CONCAT(%s, SUBSTRING(path, %d)) WHERE path LIKE %s";
-			return $this->query( $query, $path, strlen( $old_path ) + 1, $wpdb->esc_like( $old_path ) . '%' );
+			$query = "UPDATE $this->table SET path = CONCAT(%s, SUBSTRING(path, %d)) WHERE path LIKE %s AND path != %s";
+			return $this->query(
+				$query,
+				$path,
+				strlen( $old_path ) + 1,
+				$wpdb->esc_like( $old_path ) . '%',
+				$path // Except current row. Fix issues with renaming path from 'wp' to 'wp-2', to avoid 'wp-2-2'.
+			);
 		} else {
 			return $res_self;
 		}
