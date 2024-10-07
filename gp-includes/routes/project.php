@@ -217,12 +217,14 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		$post = gp_post( 'project' );
+		$post              = gp_post( 'project' );
+		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );
+		$slug              = gp_array_get( $post, 'slug', null );
 
-		if ( $post['parent_project_id'] ) {
-			$new_project_path = GP::$project->get( $post['parent_project_id'] )->path . '/' . $post['slug'];
+		if ( $parent_project_id ) {
+			$new_project_path = GP::$project->get( $parent_project_id )->path . '/' . $slug;
 		} else {
-			$new_project_path = $post['slug'];
+			$new_project_path = $slug;
 		}
 
 		$updated_project = new GP_Project( $post );
@@ -233,7 +235,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 		// TODO: add id check as a validation rule
 		if ( GP::$project->by_path( $new_project_path ) ) {
-				$this->errors[] = __( 'This project path already exists!', 'glotpress' );
+				$this->errors[] = __( 'The provided slug already exist for the parent project!', 'glotpress' );
 		} elseif ( $project->id == $updated_project->parent_project_id ) {
 			$this->errors[] = __( 'The project cannot be parent of itself!', 'glotpress' );
 		} elseif ( $project->save( $updated_project ) ) {
@@ -331,9 +333,21 @@ class GP_Route_Project extends GP_Route_Main {
 
 		$post              = gp_post( 'project' );
 		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );
+		$slug              = gp_array_get( $post, 'slug', null );
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $parent_project_id ) ) {
 			return;
+		}
+
+		if ( $parent_project_id ) {
+			$new_project_path = GP::$project->get( $parent_project_id )->path . '/' . $slug;
+		} else {
+			$new_project_path = $slug;
+		}
+
+		if ( GP::$project->by_path( $new_project_path ) ) {
+				$this->errors[] = __( 'This project path already exists!', 'glotpress' );
+				$this->tmpl( 'project-new', get_defined_vars() );
 		}
 
 		$new_project = new GP_Project( $post );
