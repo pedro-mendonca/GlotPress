@@ -217,13 +217,24 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		$updated_project = new GP_Project( gp_post( 'project' ) );
+		$post = gp_post( 'project' );
+
+		if ( $post['parent_project_id'] ) {
+			$new_project_path = GP::$project->get( $post['parent_project_id'] )->path . '/' . $post['slug'];
+		} else {
+			$new_project_path = $post['slug'];
+		}
+
+		$updated_project = new GP_Project( $post );
+
 		if ( $this->invalid_and_redirect( $updated_project, gp_url_project( $project, '-edit' ) ) ) {
 			return;
 		}
 
 		// TODO: add id check as a validation rule
-		if ( $project->id == $updated_project->parent_project_id ) {
+		if ( GP::$project->by_path( $new_project_path ) ) {
+				$this->errors[] = __( 'This project path already exists!', 'glotpress' );
+		} elseif ( $project->id == $updated_project->parent_project_id ) {
 			$this->errors[] = __( 'The project cannot be parent of itself!', 'glotpress' );
 		} elseif ( $project->save( $updated_project ) ) {
 			$this->notices[] = __( 'The project was saved.', 'glotpress' );
